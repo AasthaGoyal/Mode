@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var API_PORT = 3001;
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -40,6 +40,6 @@ app.use(function(err, req, res, next) {
 
 app.use("/public", express.static(__dirname + "/public"));
 
-app.listen(app.get("port"), function () {
-	console.log(`server is running on ${app.get("port")}`);
+app.listen(API_PORT, function () {
+	console.log(`server is running on ${API_PORT}`);
 });
