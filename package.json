@@ -1,0 +1,23 @@
+{
+  "name": "mode-retry",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AasthaGoyal/Mode.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AasthaGoyal/Mode/issues"
+  },
+  "homepage": "https://github.com/AasthaGoyal/Mode#readme",
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  }
+}
