@@ -7,12 +7,17 @@ import Dupatta from './pages/Dupatta';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import  React from "react";
+import Register from './pages/admin/Register';
+import Login from './pages/Login';
+import ForgetPassword from './pages/admin/ForgetPassword';
+
+//admin pages
+import AddKurta from './pages/admin/AddKurta';
 
 class App extends React.Component {
 	render() {
 		return (
 			<Router>
-              
 				<div>
 					<Header />
 					<br />
@@ -22,8 +27,12 @@ class App extends React.Component {
 						<Route exact path='/KurtaPlazo' component={KurtaPlazo} />
 						<Route exact path='/ALineKurta' component={ALineKurta} />
 						<Route exact path='/Dupatta' component={Dupatta} />
+						<Route exact path='/Register' component={Register} />
+						<Route exact path='/Login' component={Login} />
+						<Route exact path='/ForgetPassword' component={ForgetPassword} />
+						<Route exact path='/AddKurta' component={AddKurta} />
 					</Switch>
-                    <br/>
+					<br />
 					<Footer />
 				</div>
 			</Router>
