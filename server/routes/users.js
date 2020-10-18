@@ -1,9 +1,90 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+const db = require("../connection");
+
+db.on("error", console.log.bind(console, "connection error"));
+db.once("open", () => {
+	console.log("connection succeeded");
+});
+
+let UserModel = require("../models/user");
+
+router.post("/addUser", (req, res) => {
+	var myData = new UserModel(req.body);
+	myData
+		.save()
+		.then((item) => {
+			res.send(item);
+			console.log("item saved in database");
+		})
+		.catch((err) => {
+			res.status(400).send("unable to save database");
+			console.log("some error occured");
+		});
+});
+
+router.get("/getUser", (req, res) => {
+	console.log("the request is", req.query);
+	UserModel.aggregate(
+		[
+			{
+				$match: {
+					email: req.query.email,
+					password: req.query.password,
+				},
+			},
+		],
+		function (err, docs) {
+			if (err) {
+				console.log("some error occured");
+				res.send("Some error occured", err);
+			} else {
+				console.log(docs);
+				res.send({ user: docs });
+			}
+		}
+	);
+});
+
+router.get("/view", (req, res) => {
+	UserModel.find({}, (err, docs) => {
+		if (err) {
+			res.send(err);
+		} else {
+			res.send(docs);
+		}
+	});
+});
+
+router.post("/updateData", function (req, res) {
+	UserModel.findByIdAndUpdate(
+		req.body.id,
+		{
+			fname: req.body.fname,
+			lname: req.body.lname,
+			email: req.body.email,
+			phone: req.body.phone,
+			password: req.body.password,
+		},
+		function (err) {
+			if (err) {
+				res.send(err);
+				return;
+			}
+			res.send({ data: "Record has been updated" });
+		}
+	);
+});
+
+router.post("/removeData", function (req, res) {
+	UserModel.remove({ _id: req.body.id }, function (err) {
+		if (err) {
+			res.send(err);
+		} else {
+			res.send({ data: "Record has been deleted" });
+		}
+	});
 });
 
 module.exports = router;

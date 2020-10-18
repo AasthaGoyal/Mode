@@ -20,7 +20,7 @@ class Login extends React.Component {
 		e.preventDefault();
 
 		axios
-			.get("http://localhost:3001/getUser", {
+			.get("http://localhost:3001/users/getUser", {
 				params: {
 					email: this.state.username,
 					password: this.state.pass,

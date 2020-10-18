@@ -1,133 +1,167 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 class Footer extends React.Component {
-    render() {
-        return (
-					<div>
-						<footer class='footer-section'>
-							<div class='container'>
-								<div class='row'>
-									<div class='col-lg-3'>
-										<div class='footer-left'>
-											<div class='footer-logo'>
-												<img
-													src='img/logo_image.jpeg'
-													width='100'
-													height='50'
-													alt=''
-												/>
-												<img
-													src='img/logo_name.jpeg'
-													height='50'
-													width='120'
-													alt=''
-												/>
-											</div>
-											<ul>
-												<li>
-													Address: 202,Udhyog vihar phase 1,Gurgaon(Haryana)
-												</li>
-												<li>Phone: 9910991208</li>
-												<li>Email: email</li>
-											</ul>
-											<div class='footer-social'>
-												<a href='https://www.facebook.com/modeZara6/'>
-													<i class='fa fa-facebook'></i>
-												</a>
-												<a href='#'>
-													<i class='fa fa-instagram'></i>
-												</a>
-												<a href='#'>
-													<i class='fa fa-twitter'></i>
-												</a>
-											</div>
-										</div>
+	render() {
+		return (
+			<div>
+				<footer class='footer-section'>
+					<div class='container'>
+						<div class='row'>
+							<div class='col-lg-3'>
+								<div class='footer-left'>
+									<div class='footer-logo'>
+										<img
+											src='img/logo_image.jpeg'
+											width='100'
+											height='50'
+											alt=''
+										/>
+										<img
+											src='img/logo_name.jpeg'
+											height='50'
+											width='120'
+											alt=''
+										/>
 									</div>
-									<div class='col-lg-2 offset-lg-1'>
-										<div class='footer-widget'>
-											<h5>Quick Links</h5>
-											<ul>
-												<li>
-													<a href='#'>About Us</a>
-												</li>
-												<li>
-													<a href='#'>Shop</a>
-												</li>
-												<li>
-													<a href='#'>Collections</a>
-												</li>
-												<li>
-													<a href='#'>Contact us</a>
-												</li>
-												<li>
-													{" "}
-													<a href='#'> Admin Login</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-									<div class='col-lg-2'>
-										<div class='footer-widget'>
-											<h5>Our Collection </h5>
-											<ul>
-												<li>
-													<a href='#'>Kurta</a>
-												</li>
-												<li>
-													<a href='#'>Kurta Plazo set</a>
-												</li>
-												<li>
-													<a href='#'>A line Kurta</a>
-												</li>
-												<li>
-													<a href='#'>Kurta Plazo Dupatta set</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-									<div class='col-lg-4'>
-										<div class='newslatter-item'>
-											<h5>Join Our Newsletter Now</h5>
-											<p>
-												Get E-mail updates about our latest shop and special
-												offers.
-											</p>
-											<form action='#' class='subscribe-form'>
-												<input type='text' placeholder='Enter Your Mail' />
-												<button type='button'>Subscribe</button>
-											</form>
-										</div>
+									<ul>
+										<li>Address: 202,Udhyog vihar phase 1,Gurgaon(Haryana)</li>
+										<li>Phone: 9910991208</li>
+										<li>Email: email</li>
+									</ul>
+									<div class='footer-social'>
+										<a href='https://www.facebook.com/modeZara6/'>
+											<i class='fa fa-facebook'></i>
+										</a>
+										<a href='#'>
+											<i class='fa fa-instagram'></i>
+										</a>
+										<a href='#'>
+											<i class='fa fa-twitter'></i>
+										</a>
 									</div>
 								</div>
 							</div>
-							<div class='copyright-reserved'>
-								<div class='container'>
-									<div class='row'>
-										<div class='col-lg-12'>
-											<div class='copyright-text'>
-												Copyright &copy;
-												<script>
-													document.write(new Date().getFullYear());
-												</script>{" "}
-												All rights reserved | This template is made with{" "}
-												<i class='fa fa-heart-o' aria-hidden='true'></i> by{" "}
-												<a href='https://colorlib.com' target='_blank'>
-													Colorlib
-												</a>
-											</div>
-											<div class='payment-pic'>
-												<img src='img/payment-method.png' alt='' />
-											</div>
-										</div>
-									</div>
+							<div class='col-lg-2 offset-lg-1'>
+								<div class='footer-widget'>
+									<h5>Quick Links</h5>
+									<ul>
+										<li>
+											<NavLink
+												exact
+												className='login-panel'
+												activeClassName='is-active'
+												to='/Home'>
+												Home
+											</NavLink>
+										</li>
+										<li>
+											<NavLink
+												exact
+												className='login-panel'
+												activeClassName='is-active'
+												to='/Kurta'>
+												Kurta
+											</NavLink>
+										</li>
+										<li>
+											<NavLink
+												exact
+												className='login-panel'
+												activeClassName='is-active'
+												to='/KurtaPlazo'>
+												Kurta Plazo set
+											</NavLink>
+										</li>
+										<li>
+											<NavLink
+												exact
+												className='login-panel'
+												activeClassName='is-active'
+												to='/ALineKurta'>
+												A Line Kurta
+											</NavLink>
+										</li>
+										<li>
+											<NavLink
+												exact
+												className='login-panel'
+												activeClassName='is-active'
+												to='/Dupatta'>
+												Kurta Plazo Dupatta set
+											</NavLink>
+										</li>
+										<li>
+											<NavLink
+												exact
+												className='login-panel'
+												activeClassName='is-active'
+												to='/Login'>
+												<i className='fa fa-user'></i>Admin Login
+											</NavLink>
+										</li>
+									</ul>
 								</div>
 							</div>
-						</footer>
+							<div class='col-lg-2'>
+								<div class='footer-widget'>
+									<h5>Admin Access Pages </h5>
+									<ul>
+										<li>
+											<a href='#'>Kurta</a>
+										</li>
+										<li>
+											<a href='#'>Kurta Plazo set</a>
+										</li>
+										<li>
+											<a href='#'>A line Kurta</a>
+										</li>
+										<li>
+											<a href='#'>Kurta Plazo Dupatta set</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class='col-lg-4'>
+								<div class='newslatter-item'>
+									<h5>Join Our Newsletter Now</h5>
+									<p>
+										Get E-mail updates about our latest shop and special offers.
+									</p>
+									<form action='#' class='subscribe-form'>
+										<input type='text' placeholder='Enter Your Mail' />
+										<button type='button'>Subscribe</button>
+									</form>
+								</div>
+							</div>
+						</div>
 					</div>
-				);
-
-    }
-	
+					<div class='copyright-reserved'>
+						<div class='container'>
+							<div class='row'>
+								<div class='col-lg-12'>
+									<div class='copyright-text'>
+										Copyright &copy;
+										<script>
+											document.write(new Date().getFullYear());
+										</script>{" "}
+										All rights reserved | This template is made with{" "}
+										<i class='fa fa-heart-o' aria-hidden='true'></i> by{" "}
+										<a href='https://colorlib.com' target='_blank'>
+											Colorlib
+										</a>
+									</div>
+									<div class='payment-pic'>
+										<img src='img/payment-method.png' alt='' />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</footer>
+			</div>
+		);
+	}
 }
 
 export default Footer;

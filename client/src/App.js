@@ -12,7 +12,7 @@ import Login from './pages/Login';
 import ForgetPassword from './pages/admin/ForgetPassword';
 
 //admin pages
-import AddKurta from './pages/admin/AddKurta';
+import UserForm from './pages/admin/UserForm';
 
 class App extends React.Component {
 	render() {
@@ -30,7 +30,8 @@ class App extends React.Component {
 						<Route exact path='/Register' component={Register} />
 						<Route exact path='/Login' component={Login} />
 						<Route exact path='/ForgetPassword' component={ForgetPassword} />
-						<Route exact path='/AddKurta' component={AddKurta} />
+						<Route exact path='/UserForm' component={UserForm} />
+						
 					</Switch>
 					<br />
 					<Footer />

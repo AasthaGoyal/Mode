@@ -1,104 +1,220 @@
 import React from "react";
 import Select from "react-select";
-import Dropdown from './Dropdown';
+import Dropdown from "./Dropdown";
+import axios from "axios";
+const path = require("path");
+
+// var upload = multer({ dest: "/client/public/uploads" });
 
 class AddKurta extends React.Component {
 	constructor(props) {
 		super(props);
-		this.fileHandler = this.fileHandler.bind(this);
+
 		this.state = {
-            images: []
+			selectedFile: null,
 		};
-		
 	}
 
-	
-
-	fileHandler = (e) => {
-		e.preventDefault();
-		console.log(...e.target.value);
-		this.setState({ images: [...this.state.images, ...e.target.files] });
+	onFileChange = (event) => {
+		this.setState({ selectedFile: event.target.files[0] });
 	};
 
+	onFileUpload = () => {
+		const formData = new FormData();
+		formData.append(
+			"myFile",
+			this.state.selectedFile,
+			this.state.selectedFile.name
+		);
+
+		console.log(this.state.selectedFile);
+		// axios
+		// 	.post("http://localhost:3001/uploadFile", formData)
+		// 	.then((res) => console.log(res));
+	};
+
+	fileData = () => {
+		if (this.state.selectedFile) {
+			return (
+				<div>
+					<h2>File Details:</h2>
+					<p>File Name: {this.state.selectedFile.name}</p>
+					<p>File Type: {this.state.selectedFile.type}</p>
+					<p>
+						Last Modified:{" "}
+						{this.state.selectedFile.lastModifiedDate.toDateString()}
+					</p>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					<br />
+					<h4>Choose before Pressing the Upload button</h4>
+				</div>
+			);
+		}
+	};
+
+	Post = (e) => {
+		e.preventDefault();
+		const file = document.getElementById("inputGroupFile01").files;
+		const formData = new FormData();
+
+		formData.append("img", file[0]);
+
+		console.log(formData);
+		// fetch("http://localhost:3001/uploadImage", {
+		// 	method: "POST",
+		// 	body: formData,
+		// }).then((r) => {
+		// 	console.log(r);
+		// });
+		console.log(file[0]);
+	};
+	// componentDidMount() {
+	// 	fetch("http://localhost:3001/routes/img_data")
+	// 		.then((res) => res.json())
+	// 		.then((data) => {
+	// 			console.log(img);
+	// 			var base64Flag = "data:image/jpeg;base64,";
+	// 			var imageStr = this.arrayBufferToBase64(data.img.data.data);
+	// 			this.setState({
+	// 				img: base64Flag + imageStr,
+	// 			});
+	// 		});
+	// }
+
+	submitForm() {
+		const formdata = new FormData();
+
+		formdata.append("image");
+		// axios
+		// 	.post("http://localhost:3001/stats", {
+		// 		method: "POST",
+		// 		headers: {
+		// 			"content-type": "multipart/form-data",
+		// 		},
+		// 		body: formdata,
+		// 	})
+		// 	.then((res) => console.log(res));
+	}
+
 	render() {
-		console.log(this.state.images);
 		return (
 			<div>
-				<div className='breacrumb-section'>
-					<div className='container'>
-						<div className='row'>
-							<div className='col-lg-12'>
-								<div className='breadcrumb-text'>
-									<a href='#'>
-										<i className='fa fa-home'></i> Admin Login
-									</a>
-									<span>Add Kurta</span>
-								</div>
-							</div>
-						</div>
-					</div>
+				<h1>GeeksforGeeks</h1>
+				<h3>File Upload using React!</h3>
+				<div>
+					<input type='file' onChange={this.onFileChange} />
+					<button onClick={this.onFileUpload}>Upload!</button>
 				</div>
-
-				<div className='register-login-section spad'>
-					<div className='container'>
-						<div className='row'>
-							<div className='col-lg-6 offset-lg-3'>
-								<div className='register-form'>
-									<h2>Add New Item</h2>
-									<form action='#'>
-										<div className='group-input'>
-											<label for='category'>Choose category </label>
-											<Dropdown />
-										</div>
-
-										<div className='group-input'>
-											<label for='name'>Item Image (Multiple) </label>
-											<input
-												type='file'
-												multiple
-												id='images'
-												name='images'
-												onChange={this.fileHandler}
-											/>
-										</div>
-										<div className='group-input'>
-											<label for='name'>Item name </label>
-											<input type='text' id='username' />
-										</div>
-										<div className='group-input'>
-											<label for='pass'>Price (Rs) *</label>
-											<input type='text' id='pass' />
-										</div>
-										<div className='group-input'>
-											<label for='con-pass'>
-												Sizes available (separated by ',')
-											</label>
-											<input type='text' id='con-pass' />
-										</div>
-										<div className='group-input'>
-											<label for='con-pass'>Stock limit</label>
-											<input type='text' id='con-pass' />
-										</div>
-										<div className='group-input'>
-											<label for='con-pass'>Description</label>
-											<input type='text' id='con-pass' />
-										</div>
-
-										<button type='submit' className='site-btn register-btn'>
-											Add item
-										</button>
-									</form>
-									<div className='switch-login'>
-										<a href='./login.html' className='or-login'>
-											Or Login
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				{this.fileData()}
 			</div>
+			// <div>
+			// 	<form  enctype='multipart/form-data' onSubmit={this.submitForm}>
+			// 		<div class='form-group'>
+			// 			<input type='file' class='form-control-file' name='image' />
+			// 			<input
+			// 				type='text'
+			// 				class='form-control'
+			// 				placeholder='Category'
+			// 				name='category'
+			// 			/>
+			// 			<input
+			// 				type='submit'
+			// 				value='Get me the stats!'
+			// 				class='btn btn-default'
+			// 				onClick={this.submitForm}
+			// 			/>
+			// 		</div>
+			// 	</form>
+			// </div>
+			// <form
+			// 	action='/uploadProfilePicture'
+			// 	enctype='multipart/form-data'
+			// 	method='POST'>
+			// 	<span>Upload Profile Picture:</span>
+			// 	<input type='file' name='mypic' required /> <br />
+			// 	<input type='submit' value='submit' onSubmit = {this.onSubmit} />
+			// </form>
+
+			// <div>
+			// 	<div className='breacrumb-section'>
+			// 		<div className='container'>
+			// 			<div className='row'>
+			// 				<div className='col-lg-12'>
+			// 					<div className='breadcrumb-text'>
+			// 						<a href='#'>
+			// 							<i className='fa fa-home'></i> Admin Login
+			// 						</a>
+			// 						<span>Add Kurta</span>
+			// 					</div>
+			// 				</div>
+			// 			</div>
+			// 		</div>
+			// 	</div>
+
+			// 	<div className='register-login-section spad'>
+			// 		<div className='container'>
+			// 			<div className='row'>
+			// 				<div className='col-lg-6 offset-lg-3'>
+			// 					<div className='register-form'>
+			// 						<h2>Add New Item</h2>
+			// 						<form action='#'>
+			// 							<div className='group-input'>
+			// 								<label for='category'>Choose category </label>
+			// 								<Dropdown />
+			// 							</div>
+
+			// 							<div className='group-input'>
+			// 								<label for='name'>Item Image (Multiple) </label>
+			// 								<input
+			// 									type='file'
+			// 									multiple
+			// 									id='images'
+			// 									name='images'
+			// 									onChange={this.fileHandler}
+			// 								/>
+			// 							</div>
+			// 							<div className='group-input'>
+			// 								<label for='name'>Item name </label>
+			// 								<input type='text' id='name' />
+			// 							</div>
+			// 							<div className='group-input'>
+			// 								<label for='price'>Price (Rs) *</label>
+			// 								<input type='number' id='price' />
+			// 							</div>
+			// 							<div className='group-input'>
+			// 								<label for='con-pass'>
+			// 									Sizes available (separated by ',')
+			// 								</label>
+			// 								<input type='text' id='con-pass' />
+			// 							</div>
+			// 							<div className='group-input'>
+			// 								<label for='con-pass'>Stock limit</label>
+			// 								<input type='text' id='con-pass' />
+			// 							</div>
+			// 							<div className='group-input'>
+			// 								<label for='con-pass'>Description</label>
+			// 								<input type='text' id='con-pass' />
+			// 							</div>
+
+			// 							<button type='submit' className='site-btn register-btn' onClick={this.onSubmit}>
+			// 								Add item
+			// 							</button>
+			// 						</form>
+			// 						<div className='switch-login'>
+			// 							<a href='./login.html' className='or-login'>
+			// 								Or Login
+			// 							</a>
+			// 						</div>
+			// 					</div>
+			// 				</div>
+			// 			</div>
+			// 		</div>
+			// 	</div>
+			// </div>
 		);
 	}
 }
