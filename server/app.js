@@ -1,7 +1,12 @@
 var express = require("express");
 const path = require("path");
-const cookieParser = require("cookie-parser")
-const createError = require('http-errors')
+const cookieParser = require("cookie-parser");
+const createError = require("http-errors");
+const config = require("./config");
+const multer = require("multer");
+const GridFsStorage = require("multer-gridfs-storage");
+const crypto = require("crypto");
+const mongoose = require("mongoose");
 
 
 const userRouter = require("./routes/users");
@@ -12,70 +17,77 @@ var app = express();
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cookieParser());
 
-app.use('/users', userRouter);
-app.use('/items', itemRouter);
+const url = config.mongoURI;
+const connect = mongoose.connect(url, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+});
+
+// connect to the database
+connect.then(
+	() => {
+		console.log("Connected to database");
+	},
+	(err) => console.log(err)
+);
+
+const storage = new GridFsStorage({
+	url: config.mongoURI,
+	file: (req, file) => {
+		return new Promise((resolve, reject) => {
+			crypto.randomBytes(16, (err, buf) => {
+				if (err) {
+					return reject(err);
+				}
+				const filename = buf.toString("hex") + path.extname(file.originalname);
+				const fileinfo = {
+					filename: filename,
+					bucketName: "uploads",
+				};
+				resolve(fileinfo);
+			});
+		});
+	},
+});
+
+const upload = multer({ storage });
+
+app.use("/users", userRouter);
+app.use("/items", itemRouter(upload));
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-//const db = require("./connection");
-
-// db.on("error", console.log.bind(console, "connection error"));
-// db.once("open", () => {
-// 	console.log("connection succeeded");
+// const url = config.mongoURI;
+// const connect = mongoose.connect(url, {
+// 	useNewUrlParser: true,
+// 	useUnifiedTopology: true,
 // });
 
-// app.set('port', process.env.port || 3001);
-// app.set("views", path.join(__dirname, "views"));
-// app.set("view engine", "ejs"); 
-
-// app.get("/", function (req, res) {
-// 	res.render("Signup");
-// });
-
-// app.use("/", usersRouter);
+// // connect to the database
+// connect.then(
+// 	() => {
+// 		console.log("Connected to database");
+// 	},
+// 	(err) => console.log(err)
+// );
 
 
-
-
-// app.post("/stats", upload.single("image"), function (req, res) {
-// 	// req.file is the name of your file in the form above, here 'uploaded_file'
-//     // req.body will hold the text fields, if there were any
-//     console.log(req.file, req.body);
-//     var item = ItemModel({
-//         image: req.file.path,
-//         category: req.body.category
-//     });
-//     item.save()
-//     .then(res => console.log(res));
-   
-// });
-
-// app.get("/showItems", function(req,res) {
-//     ItemModel.find({}, (err, docs) =>  {
-//         if(err) {
-//             res.send('some error occured', err)
-//         }
-//         else {
-//             res.send(docs);
-//         }
-//     })
-// })
 
 // Error handling
-app.use(function(req, res, next) {
-  // catch 404 and forward to error handler
-  next(createError(404));
+app.use(function (req, res, next) {
+	// catch 404 and forward to error handler
+	next(createError(404));
 });
-app.use(function(err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
+app.use(function (err, req, res, next) {
+	res.locals.message = err.message;
+	res.locals.error = req.app.get("env") === "development" ? err : {};
+	res.status(err.status || 500);
+	res.render("error");
 });
 
 module.exports = app;

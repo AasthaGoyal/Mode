@@ -9,8 +9,9 @@ var itemSchema = new mongoose.Schema({
 	// size: [String],
 	// stock: Number,
 	name: String,
-	desc: String,
-	image: String
+	description: String,
+	filename: String,
+	fileId: String
 	
 });
 

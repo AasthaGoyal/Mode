@@ -1,11 +1,15 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
+var config = require("../config");
+var mongoose = require("mongoose");
 
-const db = require("../connection");
-
-db.on("error", console.log.bind(console, "connection error"));
-db.once("open", () => {
-	console.log("connection succeeded");
+const url = config.mongoURI;
+const connect = mongoose.createConnection(url, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+});
+connect.once("open", () => {
+	console.log("connection succedded");
 });
 
 let UserModel = require("../models/user");
