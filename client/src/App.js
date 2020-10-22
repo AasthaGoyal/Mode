@@ -12,7 +12,8 @@ import Login from './pages/Login';
 import ForgetPassword from './pages/admin/ForgetPassword';
 
 //admin pages
-import UserForm from './pages/admin/UserForm';
+import ImageUpload from './pages/admin/ImageUpload';
+import AddNewItem from './pages/admin/AddNewItem';
 
 class App extends React.Component {
 	render() {
@@ -30,8 +31,8 @@ class App extends React.Component {
 						<Route exact path='/Register' component={Register} />
 						<Route exact path='/Login' component={Login} />
 						<Route exact path='/ForgetPassword' component={ForgetPassword} />
-						<Route exact path='/UserForm' component={UserForm} />
-						
+						<Route exact path='/ImageUpload' component={ImageUpload} />
+						<Route exact path='/AddNewItem' component={AddNewItem} />
 					</Switch>
 					<br />
 					<Footer />

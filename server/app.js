@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 
 
 const userRouter = require("./routes/users");
-const itemRouter = require("./routes/items");
+const itemRouter = require("./routes/images");
 
 var app = express();
 
@@ -35,29 +35,34 @@ connect.then(
 	(err) => console.log(err)
 );
 
-const storage = new GridFsStorage({
-	url: config.mongoURI,
-	file: (req, file) => {
-		return new Promise((resolve, reject) => {
-			crypto.randomBytes(16, (err, buf) => {
-				if (err) {
-					return reject(err);
-				}
-				const filename = buf.toString("hex") + path.extname(file.originalname);
-				const fileinfo = {
-					filename: filename,
-					bucketName: "uploads",
-				};
-				resolve(fileinfo);
-			});
-		});
-	},
-});
+// const storage = new GridFsStorage({
+// 	url: config.mongoURI,
+// 	file: (req, file) => {
+// 		return new Promise((resolve, reject) => {
+// 			crypto.randomBytes(16, (err, buf) => {
+// 				if (err) {
+// 					return reject(err);
+// 				}
+// 				const filename = buf.toString("hex") + path.extname(file.originalname);
+// 				const fileinfo = {
+// 					filename: filename,
+// 					bucketName: "uploads",
+// 				};
+// 				resolve(fileinfo);
+// 			});
+// 		});
+// 	},
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
+
+
+app.use("/public", express.static("public"));
 
 app.use("/users", userRouter);
-app.use("/items", itemRouter(upload));
+//app.use("/items", itemRouter(upload));
+
+app.use("/items", itemRouter);
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
