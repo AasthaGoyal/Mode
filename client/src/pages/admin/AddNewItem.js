@@ -1,6 +1,6 @@
 import React from "react";
-import Dropdown from "./Dropdown";
 import axios from "axios";
+import Select from "react-select";
 
 class AddNewItem extends React.Component {
 	constructor(props) {
@@ -13,19 +13,38 @@ class AddNewItem extends React.Component {
 			imgCollection: "",
 			messsage: "",
 			name: "",
-            desc: "",
-            code: "",
-            price: "",
-            care: "",
-            size: "",
-            stock: ""
+			desc: "",
+			code: "",
+			price: "",
+			sale: false,
+			priceSale: "",
+			care: "",
+			size: "",
+			stock: "",
+			color: "",
+			category: "",
 		};
+
+		this.state = {
+			selectedOption: "Kurta",
+			setSelectedOption: null,
+		};
+
 		this.onTextChange = this.onTextChange.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	onFileChange(e) {
 		this.setState({ imgCollection: e.target.files });
 	}
+
+	handleChange = (e) => {
+		console.log(e);
+		this.setState({
+			setSelectedOption: e.value,
+			selectedOption: e.label,
+		});
+	};
 
 	onSubmit(e) {
 		e.preventDefault();
@@ -35,12 +54,12 @@ class AddNewItem extends React.Component {
 			formData.append("imgCollection", this.state.imgCollection[key]);
 		}
 		formData.append("name", this.state.name);
-        formData.append("desc", this.state.desc);
-        formData.append("code", this.state.code );
-        formData.append("price", this.state.price);
-        formData.append("care", this.state.care);
-        formData.append("size", this.state.size);
-        formData.append("stock", this.state.stock);
+		formData.append("desc", this.state.desc);
+		formData.append("code", this.state.code);
+		formData.append("price", this.state.price);
+		formData.append("care", this.state.care);
+		formData.append("size", this.state.size);
+		formData.append("stock", this.state.stock);
 
 		axios
 			.post("http://localhost:3001/api/upload-images", formData, {})
@@ -57,28 +76,46 @@ class AddNewItem extends React.Component {
 				break;
 			case "desc":
 				this.setState({ desc: event.target.value });
-                break;
-            case "code":
-                this.setState({ code: event.target.value});
-                break;
-            case "price":
-                this.setState({ price: event.target.value});
-                break;
-            case "care":
-                this.setState({ care: event.target.value});
-                break;
-            case "size":
-                this.setState({ size: event.target.value});
-                break;
-            case "stock":
-                this.setState({ stock: event.target.value});
-                break;
+				break;
+			case "code":
+				this.setState({ code: event.target.value });
+				break;
+			case "price":
+				this.setState({ price: event.target.value });
+				break;
+			case "care":
+				this.setState({ care: event.target.value });
+				break;
+			case "size":
+				this.setState({ size: event.target.value });
+				break;
+			case "stock":
+				this.setState({ stock: event.target.value });
+				break;
 			default:
 				this.setState({ message: "Some error occured" });
 		}
-    }
-    
+	};
+
 	render() {
+		const data = [
+			{
+				value: 1,
+				label: "Kurta",
+			},
+			{
+				value: 2,
+				label: "Kurta Plazo set",
+			},
+			{
+				value: 3,
+				label: "A Line Kurta",
+			},
+			{
+				value: 4,
+				label: "Kurta Plazo Dupatta Set",
+			},
+		];
 		return (
 			<div>
 				<div className='breacrumb-section'>
@@ -105,7 +142,12 @@ class AddNewItem extends React.Component {
 									<form onSubmit={this.onSubmit}>
 										<div className='group-input'>
 											<label for='category'>Choose category </label>
-											<Dropdown />
+											<Select
+												placeholder='Choose category'
+												value={this.state.selectedOption} // set selected value
+												options={data} // set list of the data
+												onChange={this.handleChange} // assign onChange function
+											/>
 										</div>
 
 										<div className='group-input'>
@@ -155,6 +197,24 @@ class AddNewItem extends React.Component {
 											/>
 										</div>
 										<div className='group-input'>
+											<label for='stock'>On Sale</label>
+											<input
+												type='Boolean'
+												id='sale'
+												name='sale'
+												onChange={this.onTextChange}
+											/>
+										</div>
+										<div className='group-input'>
+											<label for='stock'>Price On Sale (Rs.)</label>
+											<input
+												type='Number'
+												id='sale_price'
+												name='sale_price'
+												onChange={this.onTextChange}
+											/>
+										</div>
+										<div className='group-input'>
 											<label for='care'>Care </label>
 											<input
 												type='text'
@@ -181,6 +241,15 @@ class AddNewItem extends React.Component {
 												type='Number'
 												id='stock'
 												name='stock'
+												onChange={this.onTextChange}
+											/>
+										</div>
+										<div className='group-input'>
+											<label for='stock'>Colour</label>
+											<input
+												type='String'
+												id='color'
+												name='color'
 												onChange={this.onTextChange}
 											/>
 										</div>

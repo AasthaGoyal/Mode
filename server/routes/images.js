@@ -33,7 +33,7 @@ var upload = multer({
 });
 
 // User model
-let User = require("../models/image");
+let Item = require("../models/image");
 
 router.post(
 	"/upload-images",
@@ -46,19 +46,23 @@ router.post(
 			reqFiles.push(url + "/uploads/" + req.files[i].filename);
 		}
 
-		const user = new User({
+		const item = new Item({
 			_id: new mongoose.Types.ObjectId(),
             imgCollection: reqFiles,
             name: req.body.name,
             desc: req.body.desc,
             code: req.body.code,
             price: req.body.price,
+            sale: req.body.sale,
+            salePrice: req.body.salePrice,
             care: req.body.care,
             size: req.body.size,
-            stock: req.body.stock
+            stock: req.body.stock,
+            color: req.body.color,
+            category: req.body.category
 		});
 
-		user
+		item
 			.save()
 			.then((result) => {
                
@@ -84,7 +88,7 @@ router.post(
 );
 
 router.get("/getAllItems", (req, res, next) => {
-	User.find().then((data) => {
+	Item.find().then((data) => {
 		res.status(200).json({
 			message: "Items list retrieved successfully!",
 			items: data,

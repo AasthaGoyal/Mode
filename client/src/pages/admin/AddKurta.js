@@ -1,6 +1,5 @@
 import React from "react";
 import Select from "react-select";
-import Dropdown from "./Dropdown";
 import axios from "axios";
 const path = require("path");
 
