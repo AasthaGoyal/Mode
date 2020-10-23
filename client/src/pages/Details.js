@@ -1,8 +1,20 @@
 import React from "react";
+import axios from "axios";
 
 class Details extends React.Component {
+
+	constructor(props)
+	{
+		super(props);
+
+	}
+
+	componentDidMount() {
+		axios.get("http://localhost:3001/")
+	}
 	render() {
 		console.log(this.props.itemId);
+
 		return (
 			<div>
 				<div class='breacrumb-section'>
@@ -23,7 +35,6 @@ class Details extends React.Component {
 				<section class='product-shop spad page-details'>
 					<div class='container'>
 						<div class='row'>
-						
 							<div class='col-lg-12'>
 								<div class='row'>
 									<div class='col-lg-6'>

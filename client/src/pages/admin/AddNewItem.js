@@ -16,8 +16,6 @@ class AddNewItem extends React.Component {
 			desc: "",
 			code: "",
 			price: "",
-			sale: false,
-			priceSale: "",
 			care: "",
 			size: "",
 			stock: "",
@@ -196,24 +194,7 @@ class AddNewItem extends React.Component {
 												onChange={this.onTextChange}
 											/>
 										</div>
-										<div className='group-input'>
-											<label for='stock'>On Sale</label>
-											<input
-												type='Boolean'
-												id='sale'
-												name='sale'
-												onChange={this.onTextChange}
-											/>
-										</div>
-										<div className='group-input'>
-											<label for='stock'>Price On Sale (Rs.)</label>
-											<input
-												type='Number'
-												id='sale_price'
-												name='sale_price'
-												onChange={this.onTextChange}
-											/>
-										</div>
+										
 										<div className='group-input'>
 											<label for='care'>Care </label>
 											<input

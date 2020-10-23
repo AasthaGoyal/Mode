@@ -53,8 +53,6 @@ router.post(
             desc: req.body.desc,
             code: req.body.code,
             price: req.body.price,
-            sale: req.body.sale,
-            salePrice: req.body.salePrice,
             care: req.body.care,
             size: req.body.size,
             stock: req.body.stock,
