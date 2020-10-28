@@ -11,7 +11,7 @@ class Header extends React.Component {
 							<div className='ht-left'>
 								<div className='mail-service'>
 									<i className=' fa fa-envelope'></i>
-									202,Udhyog vihar phase 1,Gurgaon(Haryana)
+									202,Udhyog vihar phase V,Gurgaon(Haryana)
 								</div>
 								<div className='phone-service'>
 									<i className=' fa fa-phone'></i>

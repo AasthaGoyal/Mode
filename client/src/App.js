@@ -6,6 +6,7 @@ import ALineKurta from './pages/ALineKurta';
 import Dupatta from './pages/Dupatta';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ContactUs from './pages/ContactUs';
 import  React from "react";
 import Register from './pages/admin/Register';
 import Login from './pages/Login';
@@ -13,6 +14,7 @@ import ForgetPassword from './pages/admin/ForgetPassword';
 
 //admin pages
 import AddNewItem from './pages/admin/AddNewItem';
+import ImageDetails from './pages/imageDetails';
 
 class App extends React.Component {
 	render() {
@@ -30,8 +32,9 @@ class App extends React.Component {
 						<Route exact path='/Register' component={Register} />
 						<Route exact path='/Login' component={Login} />
 						<Route exact path='/ForgetPassword' component={ForgetPassword} />
-						
+						<Route exact path='/ContactUs' component={ContactUs} />
 						<Route exact path='/AddNewItem' component={AddNewItem} />
+						<Route exact path='/ImageDetails' component={ImageDetails} />
 					</Switch>
 					<br />
 					<Footer />

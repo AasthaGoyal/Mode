@@ -37,9 +37,9 @@ let Item = require("../models/image");
 
 router.post(
 	"/upload-images",
-	upload.array("imgCollection", 10),
+	upload.array("imgCollection", 10), upload.single("file"),
 	(req, res, next) => {
-        console.log(req.body);
+		console.log(req.body);
 		const reqFiles = [];
 		const url = req.protocol + "://" + req.get("host");
 		for (var i = 0; i < req.files.length; i++) {
@@ -48,37 +48,29 @@ router.post(
 
 		const item = new Item({
 			_id: new mongoose.Types.ObjectId(),
-            imgCollection: reqFiles,
-            name: req.body.name,
-            desc: req.body.desc,
-            code: req.body.code,
-            price: req.body.price,
-            care: req.body.care,
-            size: req.body.size,
-            stock: req.body.stock,
-            color: req.body.color,
-            category: req.body.category
+			imgCollection: reqFiles,
+			name: req.body.name,
+			desc: req.body.desc,
+			price: req.body.price,
+			care: req.body.care,
+			size: req.body.size,
+			stock: req.body.stock,
+			color: req.body.color,
+			category: req.body.category,
 		});
 
 		item
 			.save()
 			.then((result) => {
-               
-                res.status(201).json({
-                    message: "Successfully Uploaded",
-                    result
-                });
-				// res.status(201).json({
-				// 	message: "Done upload!",
-				// 	userCreated: {
-				// 		_id: result._id,
-                //         imgCollection: result.imgCollection,
-				// 	},
-				// });
+				res.status(201).json({
+					success: true,
+					result,
+				});
 			})
 			.catch((err) => {
 				console.log(err),
 					res.status(500).json({
+						success:false,
 						error: err,
 					});
 			});
@@ -88,10 +80,50 @@ router.post(
 router.get("/getAllItems", (req, res, next) => {
 	Item.find().then((data) => {
 		res.status(200).json({
-			message: "Items list retrieved successfully!",
 			items: data,
 		});
 	});
+});
+
+router.get("/getItemById/:id", (req, res, next) => {
+	console.log('the id is', req.params.id);
+	Item.findById(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
+		console.log(data);
+		if (err) res.send(err);
+		res.status(200).json({
+			success: true,
+			data,
+		});
+	})
+	.catch(err => console.log(err));
+});
+
+router.get("/getItemByCategory/:category", (req, res, next) => {
+	console.log(req.params.category);
+	Item.find({ category: req.params.category }, (err, data) => {
+		if(err) {
+			return res.send.json({
+				success:false,
+				error: err,
+			});
+		}
+		// if (!data) {
+		// 	return res.status(200).json({
+		// 		success: false,
+		// 		message: "No files available",
+		// 	});
+		// }
+
+		res.status(200).json({
+			success: true,
+			data,
+		});
+		
+	});
+
+	// }).toArray((err, files) => {
+	// 
+	// });
 });
 
 module.exports = router;

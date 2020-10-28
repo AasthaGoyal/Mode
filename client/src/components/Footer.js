@@ -25,9 +25,9 @@ class Footer extends React.Component {
 										/>
 									</div>
 									<ul>
-										<li>Address: 202,Udhyog vihar phase 1,Gurgaon(Haryana)</li>
-										<li>Phone: 9910991208</li>
-										<li>Email: email</li>
+										<li>Address: 202,Udhyog vihar phase V,Gurgaon(Haryana)</li>
+										<li>Phone: +91 9910991208</li>
+										<li>Email: mgarg073@gmail.com</li>
 									</ul>
 									<div class='footer-social'>
 										<a href='https://www.facebook.com/modeZara6/'>

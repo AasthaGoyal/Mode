@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import Select from "react-select";
 
+const sizeLists = ["S", "M", "L", "XL", "XLL", "XLLL"];
+
 class AddNewItem extends React.Component {
 	constructor(props) {
 		super(props);
@@ -11,22 +13,24 @@ class AddNewItem extends React.Component {
 
 		this.state = {
 			imgCollection: "",
-			messsage: "",
 			name: "",
 			desc: "",
 			code: "",
 			price: "",
 			care: "",
-			size: "",
+			size: [],
 			stock: "",
 			color: "",
 			category: "",
+			message: "",
 		};
 
 		this.state = {
 			selectedOption: "Kurta",
 			setSelectedOption: null,
 		};
+
+
 
 		this.onTextChange = this.onTextChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
@@ -46,8 +50,8 @@ class AddNewItem extends React.Component {
 
 	onSubmit(e) {
 		e.preventDefault();
-
-		var formData = new FormData();
+		console.log(this.state.selectedOption);
+		let formData = new FormData();
 		for (const key of Object.keys(this.state.imgCollection)) {
 			formData.append("imgCollection", this.state.imgCollection[key]);
 		}
@@ -58,11 +62,19 @@ class AddNewItem extends React.Component {
 		formData.append("care", this.state.care);
 		formData.append("size", this.state.size);
 		formData.append("stock", this.state.stock);
+		formData.append("color", this.state.color);
+		formData.append("category", this.state.selectedOption);
 
 		axios
-			.post("http://localhost:3001/api/upload-images", formData, {})
-			.then((res) => {
-				console.log(res.data);
+			.post("http://localhost:3001/items/upload-images", formData, {})
+			.then((res) => res.data)
+			.then((data) => {
+				console.log(data);
+				data.success === true
+					? this.setState({ message: "The item was successfully added" })
+					: this.setState({
+							message: "Sorry some error occured" + data.error,
+					  });
 			});
 	}
 
@@ -90,9 +102,21 @@ class AddNewItem extends React.Component {
 			case "stock":
 				this.setState({ stock: event.target.value });
 				break;
+			case "color":
+				this.setState({ color: event.target.value });
+				break;
 			default:
 				this.setState({ message: "Some error occured" });
 		}
+	};
+
+	onSizeSelected = (e) => {
+		e.preventDefault();
+		e.target.style.backgroundColor = "#ABABAB";
+		var lists = ["s"];
+		lists.push(e.target.value);
+		this.setState({ state: lists });
+		console.log(lists);
 	};
 
 	render() {
@@ -111,9 +135,10 @@ class AddNewItem extends React.Component {
 			},
 			{
 				value: 4,
-				label: "Kurta Plazo Dupatta Set",
+				label: "Kurta Plazo Dupatta set",
 			},
 		];
+		console.log(this.state.size);
 		return (
 			<div>
 				<div className='breacrumb-section'>
@@ -176,15 +201,7 @@ class AddNewItem extends React.Component {
 												onChange={this.onTextChange}
 											/>
 										</div>
-										<div className='group-input'>
-											<label for='code'>Code </label>
-											<input
-												type='text'
-												id='code'
-												name='code'
-												onChange={this.onTextChange}
-											/>
-										</div>
+
 										<div className='group-input'>
 											<label for='price'>Price (Rs) *</label>
 											<input
@@ -194,26 +211,95 @@ class AddNewItem extends React.Component {
 												onChange={this.onTextChange}
 											/>
 										</div>
-										
-										<div className='group-input'>
-											<label for='care'>Care </label>
-											<input
-												type='text'
-												id='care'
-												name='care'
-												onChange={this.onTextChange}
-											/>
-										</div>
+
 										<div className='group-input'>
 											<label for='size'>
-												Sizes available (separated by ',')
+												Sizes available (select all that applies)
 											</label>
-											<input
-												type='text'
-												id='size'
-												name='size'
-												onChange={this.onTextChange}
-											/>
+											
+											{/* <button
+												style={{
+													backgroundColor: "#e7e7e7",
+													border: " 2px solid #e7e7e7",
+													width: "50px",
+													height: "50px",
+												}}
+												onClick={this.onSizeSelected}
+												value='S'
+												id="s">
+												{" "}
+												S
+											</button>
+											{"  "}
+											<button
+												style={{
+													backgroundColor: "#e7e7e7",
+													border: " 2px solid #e7e7e7",
+													width: "50px",
+													height: "50px",
+												}}
+												onClick={this.onSizeSelected}
+												value='M'
+												id="m">
+												{" "}
+												M
+											</button>
+											{"  "}
+											<button
+												style={{
+													backgroundColor: "#e7e7e7",
+													border: " 2px solid #e7e7e7",
+													width: "50px",
+													height: "50px",
+												}}
+												onClick={this.onSizeSelected}
+												value='L'
+												id="l">
+												{" "}
+												L
+											</button>
+											{"  "}
+											<button
+												style={{
+													backgroundColor: "#e7e7e7",
+													border: " 2px solid #e7e7e7",
+													width: "50px",
+													height: "50px",
+												}}
+												onClick={this.onSizeSelected}
+												value='XL'
+												id="xl">
+												{" "}
+												XL
+											</button>
+											{"  "}
+											<button
+												style={{
+													backgroundColor: "#e7e7e7",
+													border: " 2px solid #e7e7e7",
+													width: "50px",
+													height: "50px",
+												}}
+												onClick={this.onSizeSelected}
+												value='XXL'
+												id="xxl">
+												{" "}
+												XXL
+											</button>
+											{"  "}
+											<button
+												style={{
+													backgroundColor: "#e7e7e7",
+													border: " 2px solid #e7e7e7",
+													width: "50px",
+													height: "50px",
+												}}
+												onClick={this.onSizeSelected}
+												value='XXXL'
+												id="xxxl">
+												{" "}
+												XXXL
+											</button> */}
 										</div>
 
 										<div className='group-input'>
@@ -243,9 +329,13 @@ class AddNewItem extends React.Component {
 										</button>
 									</form>
 									<div className='switch-login'>
-										<a href='./login.html' className='or-login'>
+										{/* <a href='./login.html' className='or-login'>
 											Logout
-										</a>
+										</a> */}
+										<label style={{ color: "red", fontWeight: "bold" }}>
+											{" "}
+											{this.state.message}
+										</label>
 									</div>
 								</div>
 							</div>
