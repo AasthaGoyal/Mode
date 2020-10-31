@@ -14,7 +14,10 @@ class ALineKurta extends React.Component {
 
 	componentDidMount() {
 		axios
-			.get("http://localhost:3001/items/getItemByCategory/" + "A Line Kurta")
+			.get(
+				"http://localhost:3001/items/getItemByCategory/" +
+					"A Line Kurta"
+			)
 			.then((res) => {
 				console.log(res);
 				res.data.success === true
@@ -25,6 +28,7 @@ class ALineKurta extends React.Component {
 	}
 
 	imageClick = (id) => {
+		console.log(id);
 		this.setState({
 			showDetails: true,
 			itemId: id,
@@ -33,7 +37,7 @@ class ALineKurta extends React.Component {
 
 	render() {
 		console.log(this.state.showDetails);
-		console.log(this.state.item);
+		console.log(this.state.itemId);
 
 		if (this.state.showDetails) {
 			return <Details itemId={this.state.itemId} />;
@@ -48,30 +52,37 @@ class ALineKurta extends React.Component {
 				);
 			} else {
 				let itemLists = this.state.item;
-				let image = itemLists.map((it) => {
+				let items = itemLists.map((it) => {
+					console.log(it);
 					return (
-						<a href={it.id}>
-							<img
-								src={it.imgCollection[0]}
-								alt=''
-								onClick={() => this.imageClick(it._id)}
-							/>
-						</a>
+						<div class='col-lg-4 col-sm-6'>
+							<div class='product-item'>
+								<div class='pi-pic'>
+									<a href={it.id}>
+										<img
+											src={it.imgCollection[0]}
+											alt=''
+											onClick={() => this.imageClick(it._id)}
+										/>
+									</a>
+								</div>
+								<div class='pi-text'>
+									<div class='catagory-name'>{it.category}</div>
+									<a href={it.id}>
+										<h5>
+											{" "}
+											<label onClick={() => this.imageClick(it._id)}>
+												{it.name}
+											</label>
+										</h5>
+									</a>
+									<div class='product-price'>Rs. {it.price}</div>
+								</div>
+							</div>
+						</div>
 					);
 				});
-				let name = itemLists.map((it) => {
-					return (
-						<a href={it.id}>
-							<h5>
-								{" "}
-								<label onClick={() => this.imageClick(it._id)}>{it.name}</label>
-							</h5>
-						</a>
-					);
-				});
-				let price = itemLists.map((it) => {
-					return "Rs." + it.price;
-				});
+
 				return (
 					<div>
 						<div class='breacrumb-section'>
@@ -82,7 +93,7 @@ class ALineKurta extends React.Component {
 											<a href='#'>
 												<i class='fa fa-home'></i> Home
 											</a>
-											<span>A Line Kurta</span>
+											<span>Kurta</span>
 										</div>
 									</div>
 								</div>
@@ -200,40 +211,9 @@ class ALineKurta extends React.Component {
 											</div>
 										</div>
 										<div class='product-list'>
-											<div class='row'>
-												<div class='col-lg-4 col-sm-6'>
-													<div class='product-item'>
-														<div class='pi-pic'>
-															{image}
-
-															{/* <div class='icon'>
-															<i class='icon_heart_alt'></i>
-														</div>
-														<ul>
-															<li class='w-icon active'>
-																<a href='#'>
-																	<i class='icon_bag_alt'></i>
-																</a>
-															</li>
-															<li class='quick-view'>
-																<a href='#'>+ Quick View</a>
-															</li>
-															<li class='w-icon'>
-																<a href='#'>
-																	<i class='fa fa-random'></i>
-																</a>
-															</li>
-														</ul> */}
-														</div>
-														<div class='pi-text'>
-															<div class='catagory-name'>Kurta</div>
-															{name}
-															<div class='product-price'>{price}</div>
-														</div>
-													</div>
-												</div>
-											</div>
+											<div class='row'>{items}</div>
 										</div>
+
 										<div class='loading-more'>
 											<i class='icon_loading'></i>
 											<a href='#'>Loading More</a>

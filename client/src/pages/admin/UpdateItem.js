@@ -40,7 +40,7 @@ class UpdateItem extends React.Component {
 			)
 			.then((data) => {
 				console.log(data);
-				this.setState({ item: data, selectedOption: data.category });
+				this.setState({ name: data.name, selectedOption: data.category });
 			});
 	}
 
@@ -220,12 +220,13 @@ class UpdateItem extends React.Component {
 													<br />
 
 													<h6> Name:</h6>
-													<input
+													{/* <input
 														type='text'
 														onChange={this.handleChange}
 														class='form-control'
 														name='name'
-														value={this.state.item.name}></input>
+														value={this.state.name}></input> */}
+                                                        <input type="text" value={this.state.name} onChange={(e) => {this.setState({ name: e.target.value}) }}/>
 													<br />
 													<h6> Description:</h6>
 													<textarea
