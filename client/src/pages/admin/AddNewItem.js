@@ -1,68 +1,75 @@
 import React from "react";
 import axios from "axios";
 import Select from "react-select";
-
-const sizeLists = ["S", "M", "L", "XL", "XLL", "XLLL"];
+import ReactColorPicker from "@super-effective/react-color-picker";
 
 class AddNewItem extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.onFileChange = this.onFileChange.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
-
 		this.state = {
 			imgCollection: "",
 			name: "",
 			desc: "",
-			code: "",
 			price: "",
 			care: "",
-			size: [],
 			stock: "",
-			color: "",
 			category: "",
 			message: "",
 		};
 
 		this.state = {
-			selectedOption: "Kurta",
-			setSelectedOption: null,
+			selectedOption: " ",
+			setColor: "",
 		};
 
-
+		this.state = {
+			s: false,
+			m: false,
+			l: false,
+			xl: false,
+			xxl: false,
+			xxxl: false,
+		};
 
 		this.onTextChange = this.onTextChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+		this.onFileChange = this.onFileChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
 	}
 
+	componentDidMount() {
+		console.log(this.state.selectedOption);
+	}
 	onFileChange(e) {
 		this.setState({ imgCollection: e.target.files });
 	}
 
 	handleChange = (e) => {
-		console.log(e);
+		console.log(e.target.value);
 		this.setState({
-			setSelectedOption: e.value,
-			selectedOption: e.label,
+			selectedOption: e.target.value,
 		});
 	};
 
-	onSubmit(e) {
+	onSubmit = (e) => {
 		e.preventDefault();
-		console.log(this.state.selectedOption);
+		let lists = this.getAllSizes();
+		console.log("category is", this.state.selectedOption);
+
 		let formData = new FormData();
 		for (const key of Object.keys(this.state.imgCollection)) {
 			formData.append("imgCollection", this.state.imgCollection[key]);
 		}
 		formData.append("name", this.state.name);
 		formData.append("desc", this.state.desc);
-		formData.append("code", this.state.code);
 		formData.append("price", this.state.price);
 		formData.append("care", this.state.care);
-		formData.append("size", this.state.size);
+		for (const key of Object.keys(lists)) {
+			formData.append("size", lists[key]);
+		}
 		formData.append("stock", this.state.stock);
-		formData.append("color", this.state.color);
+		formData.append("color", this.state.setColor);
 		formData.append("category", this.state.selectedOption);
 
 		axios
@@ -76,10 +83,11 @@ class AddNewItem extends React.Component {
 							message: "Sorry some error occured" + data.error,
 					  });
 			});
-	}
+	};
 
 	onTextChange = (event) => {
 		event.preventDefault();
+
 		switch (event.target.name) {
 			case "name":
 				this.setState({ name: event.target.value });
@@ -96,49 +104,42 @@ class AddNewItem extends React.Component {
 			case "care":
 				this.setState({ care: event.target.value });
 				break;
-			case "size":
-				this.setState({ size: event.target.value });
-				break;
 			case "stock":
 				this.setState({ stock: event.target.value });
 				break;
-			case "color":
-				this.setState({ color: event.target.value });
-				break;
-			default:
-				this.setState({ message: "Some error occured" });
 		}
 	};
 
 	onSizeSelected = (e) => {
 		e.preventDefault();
 		e.target.style.backgroundColor = "#ABABAB";
-		var lists = ["s"];
-		lists.push(e.target.value);
-		this.setState({ state: lists });
-		console.log(lists);
+		this.setState({ [e.target.name]: true });
 	};
+
+	onColorChange = (e) => {
+		this.setState({ setColor: e });
+	};
+	getAllSizes() {
+		let lists = [];
+		if (this.state.s) lists.push("S");
+		if (this.state.m) lists.push("M");
+		if (this.state.l) lists.push("L");
+		if (this.state.xl) lists.push("XL");
+		if (this.state.xxl) lists.push("XXL");
+		if (this.state.xxxl) lists.push("XXXL");
+		return lists;
+	}
 
 	render() {
 		const data = [
-			{
-				value: 1,
-				label: "Kurta",
-			},
-			{
-				value: 2,
-				label: "Kurta Plazo set",
-			},
-			{
-				value: 3,
-				label: "A Line Kurta",
-			},
-			{
-				value: 4,
-				label: "Kurta Plazo Dupatta set",
-			},
+			"Kurta",
+			"Kurta Plazo Set",
+			"A Line Kurta",
+			"Kurta Plazo Dupatta Set",
 		];
-		console.log(this.state.size);
+		let cats = data.map((ex) => {
+			return <option value={ex}> {ex}</option>;
+		});
 		return (
 			<div>
 				<div className='breacrumb-section'>
@@ -165,12 +166,21 @@ class AddNewItem extends React.Component {
 									<form onSubmit={this.onSubmit}>
 										<div className='group-input'>
 											<label for='category'>Choose category </label>
-											<Select
+											{/* <Select
 												placeholder='Choose category'
 												value={this.state.selectedOption} // set selected value
 												options={data} // set list of the data
 												onChange={this.handleChange} // assign onChange function
 											/>
+											 */}
+											<select
+												placeholder='Choose category'
+												value={this.state.selectedOption}
+												onChange={this.handleChange}
+												class='form-control'>
+													<option selected enabled="false"> Choose category</option>
+													{cats}
+											</select>
 										</div>
 
 										<div className='group-input'>
@@ -194,10 +204,11 @@ class AddNewItem extends React.Component {
 										</div>
 										<div className='group-input'>
 											<label for='desc'>Description </label>
-											<input
+											<textarea
 												type='text'
 												id='desc'
 												name='desc'
+												class='form-control'
 												onChange={this.onTextChange}
 											/>
 										</div>
@@ -216,8 +227,7 @@ class AddNewItem extends React.Component {
 											<label for='size'>
 												Sizes available (select all that applies)
 											</label>
-											
-											{/* <button
+											<button
 												style={{
 													backgroundColor: "#e7e7e7",
 													border: " 2px solid #e7e7e7",
@@ -226,7 +236,8 @@ class AddNewItem extends React.Component {
 												}}
 												onClick={this.onSizeSelected}
 												value='S'
-												id="s">
+												id='s'
+												name='s'>
 												{" "}
 												S
 											</button>
@@ -240,7 +251,8 @@ class AddNewItem extends React.Component {
 												}}
 												onClick={this.onSizeSelected}
 												value='M'
-												id="m">
+												id='m'
+												name='m'>
 												{" "}
 												M
 											</button>
@@ -254,7 +266,8 @@ class AddNewItem extends React.Component {
 												}}
 												onClick={this.onSizeSelected}
 												value='L'
-												id="l">
+												id='l'
+												name='l'>
 												{" "}
 												L
 											</button>
@@ -268,7 +281,8 @@ class AddNewItem extends React.Component {
 												}}
 												onClick={this.onSizeSelected}
 												value='XL'
-												id="xl">
+												id='xl'
+												name='xl'>
 												{" "}
 												XL
 											</button>
@@ -282,7 +296,8 @@ class AddNewItem extends React.Component {
 												}}
 												onClick={this.onSizeSelected}
 												value='XXL'
-												id="xxl">
+												id='xxl'
+												name='xxl'>
 												{" "}
 												XXL
 											</button>
@@ -296,10 +311,20 @@ class AddNewItem extends React.Component {
 												}}
 												onClick={this.onSizeSelected}
 												value='XXXL'
-												id="xxxl">
+												id='xxxl'
+												name='xxxl'>
 												{" "}
 												XXXL
-											</button> */}
+											</button>
+										</div>
+										<div className='group-input'>
+											<label for='stock'>Care</label>
+											<input
+												type='String'
+												id='care'
+												name='care'
+												onChange={this.onTextChange}
+											/>
 										</div>
 
 										<div className='group-input'>
@@ -313,11 +338,9 @@ class AddNewItem extends React.Component {
 										</div>
 										<div className='group-input'>
 											<label for='stock'>Colour</label>
-											<input
-												type='String'
-												id='color'
-												name='color'
-												onChange={this.onTextChange}
+											<ReactColorPicker
+												color='#ff00ff'
+												onChange={this.onColorChange}
 											/>
 										</div>
 

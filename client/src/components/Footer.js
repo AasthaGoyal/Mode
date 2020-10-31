@@ -60,6 +60,32 @@ class Footer extends React.Component {
 												exact
 												className='login-panel'
 												activeClassName='is-active'
+												to='/ContactUs'>
+												Contact Us
+											</NavLink>
+										</li>
+
+										<li>
+											<NavLink
+												exact
+												className='login-panel'
+												activeClassName='is-active'
+												to='/Login'>
+												Admin Login
+											</NavLink>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class='col-lg-2'>
+								<div class='footer-widget'>
+									<h5>Our Collection </h5>
+									<ul>
+										<li>
+											<NavLink
+												exact
+												className='login-panel'
+												activeClassName='is-active'
 												to='/Kurta'>
 												Kurta
 											</NavLink>
@@ -90,34 +116,6 @@ class Footer extends React.Component {
 												to='/Dupatta'>
 												Kurta Plazo Dupatta set
 											</NavLink>
-										</li>
-										<li>
-											<NavLink
-												exact
-												className='login-panel'
-												activeClassName='is-active'
-												to='/Login'>
-												<i className='fa fa-user'></i>Admin Login
-											</NavLink>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class='col-lg-2'>
-								<div class='footer-widget'>
-									<h5>Admin Access Pages </h5>
-									<ul>
-										<li>
-											<a href='#'>Kurta</a>
-										</li>
-										<li>
-											<a href='#'>Kurta Plazo set</a>
-										</li>
-										<li>
-											<a href='#'>A line Kurta</a>
-										</li>
-										<li>
-											<a href='#'>Kurta Plazo Dupatta set</a>
 										</li>
 									</ul>
 								</div>

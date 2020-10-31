@@ -32,7 +32,7 @@ export default class FilesUploadComponent extends Component {
         formData.append("desc", this.state.desc);
 
 		axios
-			.post("http://localhost:3001/api/upload-images", formData, {})
+			.post("http://localhost:3001/items/upload-images", formData)
 			.then((res) => {
 				console.log(res.data);
 			});
@@ -54,6 +54,24 @@ export default class FilesUploadComponent extends Component {
     }
 
 	render() {
+			const data = [
+				{
+					value: 1,
+					label: "Kurta",
+				},
+				{
+					value: 2,
+					label: "Kurta Plazo set",
+				},
+				{
+					value: 3,
+					label: "A Line Kurta",
+				},
+				{
+					value: 4,
+					label: "Kurta Plazo Dupatta set",
+				},
+			];
 		return (
 			<div className='container'>
 				<div className='row'>

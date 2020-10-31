@@ -37,15 +37,16 @@ let Item = require("../models/image");
 
 router.post(
 	"/upload-images",
-	upload.array("imgCollection", 10), upload.single("file"),
+	upload.array("imgCollection", 10),
 	(req, res, next) => {
-		console.log(req.body);
+		
 		const reqFiles = [];
 		const url = req.protocol + "://" + req.get("host");
 		for (var i = 0; i < req.files.length; i++) {
 			reqFiles.push(url + "/uploads/" + req.files[i].filename);
 		}
 
+	
 		const item = new Item({
 			_id: new mongoose.Types.ObjectId(),
 			imgCollection: reqFiles,
@@ -88,7 +89,7 @@ router.get("/getAllItems", (req, res, next) => {
 router.get("/getItemById/:id", (req, res, next) => {
 	console.log('the id is', req.params.id);
 	Item.findById(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
-		console.log(data);
+		
 		if (err) res.send(err);
 		res.status(200).json({
 			success: true,
@@ -107,12 +108,6 @@ router.get("/getItemByCategory/:category", (req, res, next) => {
 				error: err,
 			});
 		}
-		// if (!data) {
-		// 	return res.status(200).json({
-		// 		success: false,
-		// 		message: "No files available",
-		// 	});
-		// }
 
 		res.status(200).json({
 			success: true,
@@ -121,9 +116,55 @@ router.get("/getItemByCategory/:category", (req, res, next) => {
 		
 	});
 
-	// }).toArray((err, files) => {
-	// 
-	// });
 });
+
+router.get("/getItemBySearch/:query", (req, res, next) => {
+	console.log('the params are', req.params);
+	Item.find({ name: req.params.query.name, category: req.params.query.category }, (err, data) => {
+		if (err) {
+			return res.send.json({
+				success: false,
+				error: err,
+			});
+		}
+
+		res.status(200).json({
+			success: true,
+			data,
+		});
+	});
+});
+
+router.post("/deleteItemById/:id", (req,res,next) => {
+	console.log('the id being deleted is', req.params.id)
+	Item.findByIdAndRemove(
+		new mongoose.Types.ObjectId(req.params.id),
+		(err, data) => {
+			if (err) {
+				return res.status(404).json({ err: err });
+			}
+			
+			res.status(200).json({
+				success: true,
+				message: `File with ID ${req.params.id} is deleted successfully`,
+			});
+		}
+	);
+});
+
+router.put("/updateItemById", (req,res,next) => {
+	Item.findByIdAndUpdate(new mongoose.Types.ObjectId(req.params.id), req.body, {new:true}, (err, data) => {
+		if (err) {
+			return res.status(404).json({ err: err });
+		}
+
+		res.status(200).json({
+			success: true,
+			message: `File with ID ${req.params.id} has been updated`,
+		});
+	});
+
+});
+
 
 module.exports = router;
