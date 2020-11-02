@@ -152,16 +152,22 @@ router.post("/deleteItemById/:id", (req,res,next) => {
 	);
 });
 
-router.put("/updateItemById", (req,res,next) => {
-	Item.findByIdAndUpdate(new mongoose.Types.ObjectId(req.params.id), req.body, {new:true}, (err, data) => {
-		if (err) {
-			return res.status(404).json({ err: err });
-		}
+router.put("/updateItemById/:id", (req,res,next) => {
+	console.log('request is', req.params.id);
+	console.log('the body is', req.body);
+	Item.findOneAndUpdate(req.params.id, req.body, {new: true}, (err, data) => {
+		if(err) console.log(error);
+		console.log('data is', data);
+		// if (err) {
+		// 	return res.status(404).json({ err: err });
 
-		res.status(200).json({
-			success: true,
-			message: `File with ID ${req.params.id} has been updated`,
-		});
+		// }
+
+		// res.status(200).json({
+		// 	// success: true,
+		// 	// message: `File with ID ${req.params.id} has been updated`,
+		// 	data,
+		// });
 	});
 
 });

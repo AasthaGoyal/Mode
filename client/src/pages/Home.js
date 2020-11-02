@@ -252,7 +252,7 @@ class Home extends React.Component {
 															dupatta: false,
 														})
 													}>
-													Kurta
+													Kurta	
 												</li>
 												<li
 													className={this.state.kurtaPlazo ? "active" : null}

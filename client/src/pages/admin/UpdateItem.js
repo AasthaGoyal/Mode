@@ -1,6 +1,8 @@
 import axios from "axios";
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
+import {SketchPicker} from 'react-color';
+import ReactColorPicker from "@super-effective/react-color-picker";
 
 class UpdateItem extends React.Component {
 	constructor(props) {
@@ -14,6 +16,7 @@ class UpdateItem extends React.Component {
 			care: "",
 			stock: "",
 			color: "",
+			size: [],
 			category: "",
 			message: "",
 		};
@@ -40,7 +43,18 @@ class UpdateItem extends React.Component {
 			)
 			.then((data) => {
 				console.log(data);
-				this.setState({ name: data.name, selectedOption: data.category });
+				this.setState({
+					item: data,
+					name: data.name,
+					desc: data.desc,
+					price: data.price,
+					color: data.color,
+					care: data.care,
+					stock: data.stock,
+					category: data.category,
+					size: data.size,
+					selectedOption: data.category,
+				});
 			});
 	}
 
@@ -49,9 +63,11 @@ class UpdateItem extends React.Component {
 	}
 
 	onSubmit = (e) => {
-		console.log("button clicked");
+		console.log('the id is', this.props.itemId);
 		var formData = new FormData();
 
+        let lists = this.getAllSizes();
+        console.log(lists, this.state.name);
 		for (const key of Object.keys(this.state.imgCollection)) {
 			formData.append("imgCollection", this.state.imgCollection[key]);
 		}
@@ -59,22 +75,23 @@ class UpdateItem extends React.Component {
 		formData.append("desc", this.state.desc);
 		formData.append("price", this.state.price);
 		formData.append("care", this.state.care);
-		//formData.append("size", this.state.size);
+		formData.append("size", lists);
 		formData.append("stock", this.state.stock);
 		formData.append("color", this.state.color);
-		formData.append("category", this.state.selectedOption);
-
+        formData.append("category", this.state.selectedOption)
+        
+        console.log('making request now');
 		axios
-			.put("http://localhost:3001/items/updateItemById", formData)
-			.then((res) => console.log(res));
-	};
+			.put("http://localhost:3001/items/updateItemById/" + this.props.itemId, formData, {})
+			.then((res) => console.log('resonse is', res));
+	};  
 
 	handleChange = (event) => {
 		console.log(event.target.value);
 		event.preventDefault();
 		switch (event.target.name) {
 			case "name":
-				this.setState({ ...this.state.item, name: event.target.value });
+				this.setState({ name: event.target.value });
 				break;
 			case "desc":
 				this.setState({ desc: event.target.value });
@@ -90,15 +107,15 @@ class UpdateItem extends React.Component {
 				break;
 			case "color":
 				this.setState({ color: event.target.value });
-				break;
-		}
-	
-	};
+                break;
+        }
+    }
+
 
 	categoryChange = (e) => {
 		console.log(e.target.value);
 		this.setState({
-			selectedOption:  e.target.value,
+			selectedOption: e.target.value,
 		});
 	};
 
@@ -108,6 +125,10 @@ class UpdateItem extends React.Component {
 		this.setState({ [e.target.name]: true });
 	};
 
+	onColorChange = (e) => {
+		this.setState({ color: e });
+    };
+    
 	getAllSizes() {
 		let lists = [];
 		if (this.state.s) lists.push("S");
@@ -115,11 +136,13 @@ class UpdateItem extends React.Component {
 		if (this.state.l) lists.push("L");
 		if (this.state.xl) lists.push("XL");
 		if (this.state.xxl) lists.push("XXL");
-		if (this.state.xxxl) lists.push("XXXL");
+        if (this.state.xxxl) lists.push("XXXL");
+        
 		return lists;
 	}
 
 	render() {
+		console.log(this.state.item);
 		const data = [
 			"Kurta",
 			"Kurta Plazo Set",
@@ -220,21 +243,21 @@ class UpdateItem extends React.Component {
 													<br />
 
 													<h6> Name:</h6>
-													{/* <input
+													<input
 														type='text'
 														onChange={this.handleChange}
 														class='form-control'
+														value={this.state.name}
 														name='name'
-														value={this.state.name}></input> */}
-                                                        <input type="text" value={this.state.name} onChange={(e) => {this.setState({ name: e.target.value}) }}/>
+													/>
 													<br />
 													<h6> Description:</h6>
-													<textarea
+													<input
 														onChange={this.handleChange}
 														height='120px'
 														class='form-control'
-														name='description'
-														value={this.state.item.desc}></textarea>
+														name='desc'
+														value={this.state.desc}/>
 													<br />
 													<h6> Price (Rs):</h6>
 													<input
@@ -242,18 +265,30 @@ class UpdateItem extends React.Component {
 														onChange={this.handleChange}
 														class='form-control'
 														name='price'
-														value={this.state.item.price}></input>
+														value={this.state.price}></input>
 													<br />
 													<h6> Color:</h6>
-													<input
-														type='text'
-														onChange={this.handleChange}
-														class='form-control'
-														name='color'
-														value={this.state.item.color}></input>
+													<center>
+														<div
+															style={{
+																backgroundColor: this.state.color,
+																width: "30px",
+																height: "30px",
+																mozBorderRadius: "50px",
+																webkitBorderRadius: "50px",
+																borderRadius: "50px",
+															}}
+														/>
+													</center>
+
+													<ReactColorPicker
+														color='#ff00ff'
+														onChange={this.onColorChange}
+													/>
+
 													<br />
 													<h6>Sizes Available :</h6>
-													<ul>{sizes}</ul>
+													<ul>{sizes} {" "} </ul>
 													<br />
 													<h6> Enter new sizes</h6>
 													<button

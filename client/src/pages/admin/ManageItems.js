@@ -126,7 +126,7 @@ class ManageItems extends React.Component {
 									</a>
 								</div>
 								<div class='pi-text'>
-									<div class='catagory-name'>Kurta</div>
+									<div class='catagory-name'>{it.category}</div>
 									<a href={it.id}>
 										<h5>
 											{" "}
