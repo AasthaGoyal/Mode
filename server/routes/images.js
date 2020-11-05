@@ -39,14 +39,14 @@ router.post(
 	"/upload-images",
 	upload.array("imgCollection", 10),
 	(req, res, next) => {
-		
+
 		const reqFiles = [];
 		const url = req.protocol + "://" + req.get("host");
 		for (var i = 0; i < req.files.length; i++) {
 			reqFiles.push(url + "/uploads/" + req.files[i].filename);
 		}
 
-	
+
 		const item = new Item({
 			_id: new mongoose.Types.ObjectId(),
 			imgCollection: reqFiles,
@@ -71,7 +71,7 @@ router.post(
 			.catch((err) => {
 				console.log(err),
 					res.status(500).json({
-						success:false,
+						success: false,
 						error: err,
 					});
 			});
@@ -89,22 +89,22 @@ router.get("/getAllItems", (req, res, next) => {
 router.get("/getItemById/:id", (req, res, next) => {
 	console.log('the id is', req.params.id);
 	Item.findById(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
-		
+
 		if (err) res.send(err);
 		res.status(200).json({
 			success: true,
 			data,
 		});
 	})
-	.catch(err => console.log(err));
+		.catch(err => console.log(err));
 });
 
 router.get("/getItemByCategory/:category", (req, res, next) => {
 	console.log(req.params.category);
 	Item.find({ category: req.params.category }, (err, data) => {
-		if(err) {
+		if (err) {
 			return res.send.json({
-				success:false,
+				success: false,
 				error: err,
 			});
 		}
@@ -113,7 +113,7 @@ router.get("/getItemByCategory/:category", (req, res, next) => {
 			success: true,
 			data,
 		});
-		
+
 	});
 
 });
@@ -135,7 +135,7 @@ router.get("/getItemBySearch/:query", (req, res, next) => {
 	});
 });
 
-router.post("/deleteItemById/:id", (req,res,next) => {
+router.post("/deleteItemById/:id", (req, res, next) => {
 	console.log('the id being deleted is', req.params.id)
 	Item.findByIdAndRemove(
 		new mongoose.Types.ObjectId(req.params.id),
@@ -143,7 +143,7 @@ router.post("/deleteItemById/:id", (req,res,next) => {
 			if (err) {
 				return res.status(404).json({ err: err });
 			}
-			
+
 			res.status(200).json({
 				success: true,
 				message: `File with ID ${req.params.id} is deleted successfully`,
@@ -152,23 +152,64 @@ router.post("/deleteItemById/:id", (req,res,next) => {
 	);
 });
 
-router.put("/updateItemById/:id", (req,res,next) => {
-	console.log('request is', req.params.id);
-	console.log('the body is', req.body);
-	Item.findOneAndUpdate(req.params.id, req.body, {new: true}, (err, data) => {
-		if(err) console.log(error);
-		console.log('data is', data);
-		// if (err) {
-		// 	return res.status(404).json({ err: err });
+router.post("/updateItemById/:id", upload.array("imgCollection", 10), (req, res, next) => {
+	
+	Item.findById(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
+		if(err) console.log('Error:', err);
+		
+		const reqFiles = [];
+		const url = req.protocol + "://" + req.get("host");
+		for (var i = 0; i < req.files.length; i++) {
+			reqFiles.push(url + "/uploads/" + req.files[i].filename);
+		}
 
-		// }
+		if(reqFiles.length > 0) {
+			data.imgCollection = reqFiles;
+		}
+		data.name = req.body.name;
+		data.desc = req.body.desc;
+		data.price = req.body.price;
+		data.care = req.body.care;
+		if(req.body.size) {
+			data.size = req.body.size;
+		}	
+		data.stock = req.body.stock;
+		data.color = req.body.color;
+		data.category = req.body.category;
 
-		// res.status(200).json({
-		// 	// success: true,
-		// 	// message: `File with ID ${req.params.id} has been updated`,
-		// 	data,
-		// });
+		
+
+		data.save().then((result) => {
+			res.status(201).json({
+				success: true,
+				result,
+			});
+		})
+		.catch((err) => {
+			console.log(err),
+				res.status(500).json({
+					success: false,
+					error: err,
+				});
+		});
 	});
+
+
+
+	// item.save(req.params.id, req.body, (err, data) => {
+	// 	if(err) console.log(error);
+	// 	console.log('data is', data);
+	// 	// if (err) {
+	// 	// 	return res.status(404).json({ err: err });
+
+	// 	// }
+
+	// 	// res.status(200).json({
+	// 	// 	// success: true,
+	// 	// 	// message: `File with ID ${req.params.id} has been updated`,
+	// 	// 	data,
+	// 	// });
+	// });
 
 });
 

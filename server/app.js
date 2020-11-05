@@ -22,18 +22,27 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cookieParser());
 
 const url = config.mongoURI;
-const connect = mongoose.connect(url, {
+console.log(url);
+mongoose.connect(url, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
 
+const db = mongoose.connection;
+
+
 // connect to the database
-connect.then(
-	() => {
-		console.log("Connected to database");
-	},
-	(err) => console.log(err)
-);
+try {
+    db.on("error", console.error.bind(console, "connection error"));
+
+    db.once('open', function () {
+        console.log("we are connected")
+    });
+
+
+} catch (error) {
+    console.log('some error', error);
+}
 
 // const storage = new GridFsStorage({
 // 	url: config.mongoURI,

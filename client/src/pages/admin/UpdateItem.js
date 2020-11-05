@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
-import {SketchPicker} from 'react-color';
+import { SketchPicker } from 'react-color';
 import ReactColorPicker from "@super-effective/react-color-picker";
 
 class UpdateItem extends React.Component {
@@ -10,6 +10,7 @@ class UpdateItem extends React.Component {
 
 		this.state = {
 			imgCollection: "",
+			newCollection: "",
 			name: "",
 			desc: "",
 			price: "",
@@ -32,7 +33,7 @@ class UpdateItem extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log("the item id is", this.props.itemId);
+		
 		axios
 			.get("http://localhost:3001/items/getItemById/" + this.props.itemId)
 			.then(
@@ -44,6 +45,7 @@ class UpdateItem extends React.Component {
 			.then((data) => {
 				console.log(data);
 				this.setState({
+					imgCollection: data.imgCollection,
 					item: data,
 					name: data.name,
 					desc: data.desc,
@@ -59,35 +61,39 @@ class UpdateItem extends React.Component {
 	}
 
 	onFileChange(e) {
-		this.setState({ imgCollection: e.target.files });
+		this.setState({ imgCollection : e.target.files });
 	}
 
 	onSubmit = (e) => {
-		console.log('the id is', this.props.itemId);
-		var formData = new FormData();
+		let lists = this.getAllSizes() ;
+		const formData = new FormData();
 
-        let lists = this.getAllSizes();
-        console.log(lists, this.state.name);
-		for (const key of Object.keys(this.state.imgCollection)) {
-			formData.append("imgCollection", this.state.imgCollection[key]);
+		for (const key of Object.keys(this.state.imgCollection )) {
+			formData.append("imgCollection", this.state.imgCollection[key])
+			console.log(this.state.imgCollection[key]);
 		}
 		formData.append("name", this.state.name);
 		formData.append("desc", this.state.desc);
 		formData.append("price", this.state.price);
 		formData.append("care", this.state.care);
-		formData.append("size", lists);
+		for (const key of Object.keys(lists)) {
+			formData.append("size", lists[key]);
+		}
 		formData.append("stock", this.state.stock);
-		formData.append("color", this.state.color);
-        formData.append("category", this.state.selectedOption)
-        
-        console.log('making request now');
-		axios
-			.put("http://localhost:3001/items/updateItemById/" + this.props.itemId, formData, {})
-			.then((res) => console.log('resonse is', res));
-	};  
+		formData.append("color", this.state.setColor);
+		formData.append("category", this.state.selectedOption);
+		
+		axios.post("http://localhost:3001/items/updateItemById/" + this.props.itemId, formData, {})
+		.then(res => console.log(res));
+
+		// console.log('making request now');
+		// axios
+		// 	.post("http://localhost:3001/items/updateItemById/" + this.props.itemId, { "imgCollection": this.state.newCollection ? this.state.newCollection : this.state.imgCollection, "name": this.state.name, "desc": this.state.desc, "price": this.state.price, "care": this.state.care, "size": lists ? lists: this.state.size, "stock": this.state.stock, "color": this.state.color, "category": this.state.selectedOption}, {})
+		// 	.then((res) => console.log('resonse is', res));
+	};
 
 	handleChange = (event) => {
-		console.log(event.target.value);
+		
 		event.preventDefault();
 		switch (event.target.name) {
 			case "name":
@@ -107,9 +113,9 @@ class UpdateItem extends React.Component {
 				break;
 			case "color":
 				this.setState({ color: event.target.value });
-                break;
-        }
-    }
+				break;
+		}
+	}
 
 
 	categoryChange = (e) => {
@@ -127,8 +133,8 @@ class UpdateItem extends React.Component {
 
 	onColorChange = (e) => {
 		this.setState({ color: e });
-    };
-    
+	};
+
 	getAllSizes() {
 		let lists = [];
 		if (this.state.s) lists.push("S");
@@ -136,13 +142,13 @@ class UpdateItem extends React.Component {
 		if (this.state.l) lists.push("L");
 		if (this.state.xl) lists.push("XL");
 		if (this.state.xxl) lists.push("XXL");
-        if (this.state.xxxl) lists.push("XXXL");
-        
+		if (this.state.xxxl) lists.push("XXXL");
+
 		return lists;
 	}
 
 	render() {
-		console.log(this.state.item);
+		
 		const data = [
 			"Kurta",
 			"Kurta Plazo Set",
@@ -161,7 +167,7 @@ class UpdateItem extends React.Component {
 				</div>
 			);
 		} else {
-			console.log("category is", this.state.selectedOption);
+			
 			let images = this.state.item.imgCollection.map((img) => {
 				return (
 					// <div class='pt active' data-imgbigurl={img}>
@@ -257,7 +263,7 @@ class UpdateItem extends React.Component {
 														height='120px'
 														class='form-control'
 														name='desc'
-														value={this.state.desc}/>
+														value={this.state.desc} />
 													<br />
 													<h6> Price (Rs):</h6>
 													<input

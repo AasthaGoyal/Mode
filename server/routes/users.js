@@ -8,6 +8,12 @@ const connect = mongoose.createConnection(url, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
+
+
+connect.on("error", function(err) {
+	console.log("some error occured", err);
+});
+
 connect.once("open", () => {
 	console.log("connection succedded");
 });
