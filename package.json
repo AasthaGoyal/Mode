@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client-install": "npm install --prefix client",
     "client": "cd client && npm start",
     "server": "cd server && npm start",
     "start": "concurrently \"npm run server\" \"npm run client\"",
@@ -45,6 +44,6 @@
     "nodemon": "^2.0.4"
   },
   "engines": {
-    "node": "10.15.2"
+    "node": "10.19.0"
   }
 }
