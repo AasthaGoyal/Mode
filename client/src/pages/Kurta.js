@@ -9,20 +9,26 @@ class Kurta extends React.Component {
 			item: [],
 			showDetails: false,
 			itemId: "",
+			colors: []
 		};
 	}
 
 	componentDidMount() {
+		
 		axios
 			.get("http://localhost:3001/items/getItemByCategory/" + "Kurta")
 			.then((res) => {
 				console.log(res);
 				res.data.success === true
-					? this.setState({ item: res.data.data })
+					? this.setState({ item: res.data.data , colors: res.data.data.color})
 					: alert("Some error occured ", res.error);
 			})
 			.catch((err) => console.log("Some error occured", err));
+
+		
 	}
+
+	
 
 	imageClick = (id) => {
 		console.log(id);
@@ -33,6 +39,7 @@ class Kurta extends React.Component {
 	};
 
 	render() {
+		console.log('the colors are', this.state.colors);
 		console.log(this.state.showDetails);
 		console.log(this.state.itemId);
 

@@ -51,6 +51,7 @@ class App extends React.Component {
 						<Header />
 						<br />
 						<Switch>
+							<Route exact path='/ManageUsers' component={ManageUsers} />
 							<Route exact path='/Register' component={Register} />
 							<Route exact path='/AddNewItem' component={AddNewItem} />
 							<Route exact path='/ImageUpload' component={ImageUpload} />

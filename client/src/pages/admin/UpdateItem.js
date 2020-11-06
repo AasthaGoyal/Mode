@@ -66,6 +66,7 @@ class UpdateItem extends React.Component {
 
 	onSubmit = (e) => {
 		let lists = this.getAllSizes() ;
+		console.log('color is', this.state.color);
 		const formData = new FormData();
 
 		for (const key of Object.keys(this.state.imgCollection )) {
@@ -80,7 +81,7 @@ class UpdateItem extends React.Component {
 			formData.append("size", lists[key]);
 		}
 		formData.append("stock", this.state.stock);
-		formData.append("color", this.state.setColor);
+		formData.append("color", this.state.color);
 		formData.append("category", this.state.selectedOption);
 		
 		axios.post("http://localhost:3001/items/updateItemById/" + this.props.itemId, formData, {})
@@ -132,6 +133,7 @@ class UpdateItem extends React.Component {
 	};
 
 	onColorChange = (e) => {
+		console.log(e);
 		this.setState({ color: e });
 	};
 

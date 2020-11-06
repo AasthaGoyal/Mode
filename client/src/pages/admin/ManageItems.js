@@ -69,7 +69,7 @@ class ManageItems extends React.Component {
 					? alert(res.data.message)
 					: alert("Some error occured")
             );
-        // window.location.reload(false);
+         window.location.reload(false);
 	};
 
 	categoryChange = (e) => {
