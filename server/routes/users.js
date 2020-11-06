@@ -57,7 +57,7 @@ router.get("/getUser", (req, res) => {
 	);
 });
 
-router.get("/view", (req, res) => {
+router.get("/getAllUsers", (req, res) => {
 	UserModel.find({}, (err, docs) => {
 		if (err) {
 			res.send(err);
@@ -83,6 +83,23 @@ router.post("/updateData", function (req, res) {
 				return;
 			}
 			res.send({ data: "Record has been updated" });
+		}
+	);
+});
+
+router.post("/deleteUserById/:id", (req, res, next) => {
+	console.log('the id being deleted is', req.params.id)
+	UserModel.findByIdAndRemove(
+		new mongoose.Types.ObjectId(req.params.id),
+		(err, data) => {
+			if (err) {
+				return res.status(404).json({ err: err });
+			}
+
+			res.status(200).json({
+				success: true,
+				message: `File with ID ${req.params.id} is deleted successfully`,
+			});
 		}
 	);
 });

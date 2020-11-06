@@ -8,7 +8,6 @@ const GridFsStorage = require("multer-gridfs-storage");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 
-
 const userRouter = require("./routes/users");
 const itemRouter = require("./routes/images");
 
@@ -24,24 +23,20 @@ app.use(cookieParser());
 const url = config.mongoURI;
 console.log(url);
 mongoose.connect(url, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
-
-const db = mongoose.connection;
-
 
 // connect to the database
 try {
-    db.on("error", console.error.bind(console, "connection error"));
+  const db = mongoose.connection;
+  db.on("error", console.error.bind(console, "connection error"));
 
-    db.once('open', function () {
-        console.log("we are connected")
-    });
-
-
+  db.once("open", function () {
+    console.log("we are connected");
+  });
 } catch (error) {
-    console.log('some error', error);
+  console.log("some error", error);
 }
 
 // const storage = new GridFsStorage({
@@ -64,7 +59,6 @@ try {
 // });
 
 // const upload = multer({ storage });
-
 
 app.use("/public", express.static("public"));
 
@@ -90,18 +84,16 @@ app.set("view engine", "ejs");
 // 	(err) => console.log(err)
 // );
 
-
-
 // Error handling
 app.use(function (req, res, next) {
-	// catch 404 and forward to error handler
-	next(createError(404));
+  // catch 404 and forward to error handler
+  next(createError(404));
 });
 app.use(function (err, req, res, next) {
-	res.locals.message = err.message;
-	res.locals.error = req.app.get("env") === "development" ? err : {};
-	res.status(err.status || 500);
-	res.render("error");
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.status(err.status || 500);
+  res.render("error");
 });
 
 module.exports = app;

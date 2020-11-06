@@ -1,19 +1,21 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/dbmode", { useNewUrlParser: true, useUnifiedTopology: true });
-
-const db = mongoose.connection;
-
 try {
-    db.on("error", console.error.bind(console, "connection error"));
+  mongoose.connect("mongodb://127.0.0.1:27017/dbmode", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(()=> console.log("Database connected"))
+  .catch(err => console.log('err is', err));
 
-    db.once('open', function () {
-        console.log("we are connected")
-    });
+  const db = mongoose.connection;
+  db.on("error", console.error.bind(console, "connection error"));
 
-
+  db.once("open", function () {
+    console.log("we are connected");
+  });
 } catch (error) {
-    console.log('some error', error);
+  console.log("some error", error);
 }
 
 // module.exports = app;
@@ -26,7 +28,6 @@ try {
 //      * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
 //      */
 //     const uri = "mongodb+srv://aasthag:daasthag@cluster0.ktmdx.mongodb.net/dbmode?retryWrites=true&w=majority";
-
 
 //     const client = new MongoClient(uri);
 
@@ -47,8 +48,6 @@ try {
 // async function listDatabases(client) {
 
 //     databasesList = await client.db().admin().listDatabases();
-
-
 
 //     console.log("Databases:");
 

@@ -86,6 +86,16 @@ router.get("/getAllItems", (req, res, next) => {
 	});
 });
 
+router.get("/getColors", (req, res, next) => {
+	Item.find().then((data) => {
+		console.log(data);
+		res.status(200).json({
+			items: data.color,
+		});
+	});
+});
+
+
 router.get("/getItemById/:id", (req, res, next) => {
 	console.log('the id is', req.params.id);
 	Item.findById(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
