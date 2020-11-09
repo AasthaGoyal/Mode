@@ -22,7 +22,7 @@ class Header extends React.Component {
 
 	handleClick= (e) => {
 		e.preventDefault();
-		console.log('nav clicked', e.target.id);
+		
 
 		switch(e.target.id){
 			case "home":

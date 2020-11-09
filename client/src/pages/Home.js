@@ -1,6 +1,7 @@
 import React from "react";
 import Details from "./Details";
 import axios from "axios";
+import ImageSlider from './img';
 
 class Home extends React.Component {
 	constructor() {
@@ -294,38 +295,7 @@ class Home extends React.Component {
 											</ul>
 										</div>
 
-										<div class='product-slider owl-carousel'>
-											<div class='product-item'>
-												<div class='pi-pic'>
-													<img src='img/banner_1.jpg' alt='' />
-													<div class='icon'>
-														<i class='icon_heart_alt'></i>
-													</div>
-													<ul>
-														<li class='w-icon active'>
-															<a href='#'>
-																<i class='icon_bag_alt'></i>
-															</a>
-														</li>
-														<li class='quick-view'>
-															<a href='#'>+ Quick View</a>
-														</li>
-														<li class='w-icon'>
-															<a href='#'>
-																<i class='fa fa-random'></i>
-															</a>
-														</li>
-													</ul>
-												</div>
-												<div class='pi-text'>
-													<div class='catagory-name'>Towel</div>
-													<a href='#'>
-														<h5>Converse Shoes</h5>
-													</a>
-													<div class='product-price'>$34.00</div>
-												</div>
-											</div>
-										</div>
+										{/* <ImageSlider /> */}
 									</div>
 								</div>
 							</div>
