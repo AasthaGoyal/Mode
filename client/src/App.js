@@ -12,14 +12,14 @@ import Register from "./pages/admin/Register";
 import Login from "./pages/Login";
 import ForgetPassword from "./pages/admin/ForgetPassword";
 
+
 //admin pages
 import AddNewItem from "./pages/admin/AddNewItem";
-import ImageDetails from "./pages/imageDetails";
 import AdminHeader from './components/AdminHeader';
 import ManageItems from './pages/admin/ManageItems';
 import ManageUsers from './pages/admin/ManageUsers';
-import ImageUpload from './pages/admin/ImageUpload';
-import ImageSlider from './pages/img';
+import example from './pages/example';
+
 
 class App extends React.Component {
 	constructor(props) {
@@ -40,7 +40,7 @@ class App extends React.Component {
 							<Route exact path='/Register' component={Register} />
 							<Route exact path='/ManageItems' component={ManageItems} />
 							<Route exact path='/ManageUsers' component={ManageUsers} />
-							<Route exact path='/ImageUpload' component={ImageUpload} />
+						
 						</Switch>
 					</div>
 				</Router>
@@ -52,11 +52,12 @@ class App extends React.Component {
 						<Header />
 						<br />
 						<Switch>
-							<Route exact path='/ManageUsers' component={ManageUsers} />
-							<Route exact path='/ImageSlider' component={ImageSlider} />
-							<Route exact path='/Register' component={Register} />
+							
+							
+							
+						<Route exact path='/example' component={example} />
 							<Route exact path='/AddNewItem' component={AddNewItem} />
-							<Route exact path='/ImageUpload' component={ImageUpload} />
+						
 							<Route exact={true} path='/' component={Home} />
 							<Route exact path='/Home' component={Home} />
 							<Route exact path='/Kurta' component={Kurta} />
@@ -70,7 +71,7 @@ class App extends React.Component {
 
 							<Route exact path='/ContactUs' component={ContactUs} />
 
-							<Route exact path='/ImageDetails' component={ImageDetails} />
+							
 						</Switch>
 						<br />
 						<Footer />

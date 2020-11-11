@@ -115,6 +115,24 @@ router.get("/getSortedItems/:category", (req, res, next) => {
     .limit(JSON.parse(req.query.limit));
 });
 
+router.get("/getFilters", (req,res,next) => {
+  Item.find({}).select({"price":1}).sort({"price": -1}).limit(1).exec(function(err, docs){
+    console.log(docs);
+    if (err) {
+      return res.send.json({
+        success: false,
+        error: err,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      price: docs[0].price,
+    });
+  });
+})
+
+
 router.get("/getItemByCategory/:category", (req, res, next) => {
   console.log(req.params.category);
   Item.find({ category: req.params.category }, (err, data) => {

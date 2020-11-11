@@ -1,7 +1,7 @@
 import React from "react";
 import Details from "./Details";
 import axios from "axios";
-import ImageSlider from './img';
+import ImageSlider from './ImageSlider';
 
 class Home extends React.Component {
 	constructor() {
@@ -295,7 +295,7 @@ class Home extends React.Component {
 											</ul>
 										</div>
 
-										{/* <ImageSlider /> */}
+										This is slider
 									</div>
 								</div>
 							</div>
