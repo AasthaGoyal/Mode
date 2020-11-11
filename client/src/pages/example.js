@@ -24,6 +24,26 @@ class Filters extends React.Component {
 
   componentDidMount() {
     this.getMaxPrice();
+    this.getColors();
+   
+  }
+
+  getMaxPrice() {
+    axios
+      .get("http://localhost:3001/items/getFilters")
+      .then((res) => {
+        console.log(res);
+        if (res.data.success === true) {
+          this.setState({ maxPrice: res.data.price });
+        } else {
+          alert("Some error occured ", res.error);
+        }
+      })
+      .catch((err) => console.log("Some error occured", err));
+  }
+
+  getColors()
+  {
     let colorLists = [];
     axios
       .get("http://localhost:3001/items/getItemByCategory/" + "Kurta")
@@ -41,7 +61,6 @@ class Filters extends React.Component {
           console.log("uc", uniqueColors);
 
           this.setState({
-            item: res.data.data,
             limit: res.data.data.length,
             colors: uniqueColors,
           });
@@ -50,22 +69,7 @@ class Filters extends React.Component {
         }
       })
       .catch((err) => console.log("Some error occured", err));
-  }
 
-  getMaxPrice() {
-    axios
-      .get("http://localhost:3001/items/getFilters")
-      .then((res) =>{
-          console.log(res);
-          if(res.data.success === true)
-          {
-              this.setState({maxPrice: res.data})
-          }
-          else {
-            alert("Some error occured ", res.error);
-          }
-      })
-      .catch((err) => console.log("Some error occured", err));
   }
 
   handleSort = (e) => {
@@ -81,6 +85,13 @@ class Filters extends React.Component {
       limit: e.target.value,
     });
   };
+
+  onPriceChange = (e) => {
+      e.preventDefault();
+      this.setState({
+          value: e.value
+      });
+  }
 
   render() {
     return (
