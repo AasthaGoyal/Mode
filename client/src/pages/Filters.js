@@ -1,31 +1,42 @@
+import Slider from "rc-slider";
 import React from "react";
-import Progress from "./Progress";
 import axios from "axios";
 
-class Data extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+import "rc-slider/assets/index.css";
 
-  render() {
-    return (
-      <div>
-        Hi i m one {this.props.sort} and limit {this.props.limit}
-      </div>
-    );
-  }
-}
+import Data from "./Data";
+
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+const Range = createSliderWithTooltip(Slider.Range);
 
 class Filters extends React.Component {
   constructor() {
     super();
-    this.state = { sort: "", limit: "", colors: [], maxPrice: "1000" };
+    this.state = {
+      sort: "",
+      limit: "",
+      colors: [],
+      maxPrice: "",
+      lower: 100,
+      upper: "",
+      value: [200, 1800],
+      selectedColor: "",
+      sendRange: [],
+      sendSize: [],
+      s: false,
+      m: false,
+      l: false,
+      xl: false,
+      xxl: false,
+      xxxl: false,
+    };
+
+    this.onFilterSubmit = this.onFilterSubmit.bind(this);
   }
 
   componentDidMount() {
     this.getMaxPrice();
     this.getColors();
-   
   }
 
   getMaxPrice() {
@@ -34,7 +45,7 @@ class Filters extends React.Component {
       .then((res) => {
         console.log(res);
         if (res.data.success === true) {
-          this.setState({ maxPrice: res.data.price });
+          this.setState({ upper: res.data.price });
         } else {
           alert("Some error occured ", res.error);
         }
@@ -42,8 +53,7 @@ class Filters extends React.Component {
       .catch((err) => console.log("Some error occured", err));
   }
 
-  getColors()
-  {
+  getColors() {
     let colorLists = [];
     axios
       .get("http://localhost:3001/items/getItemByCategory/" + "Kurta")
@@ -58,8 +68,6 @@ class Filters extends React.Component {
             return array.indexOf(val) == id;
           });
 
-          console.log("uc", uniqueColors);
-
           this.setState({
             limit: res.data.data.length,
             colors: uniqueColors,
@@ -69,7 +77,6 @@ class Filters extends React.Component {
         }
       })
       .catch((err) => console.log("Some error occured", err));
-
   }
 
   handleSort = (e) => {
@@ -86,39 +93,69 @@ class Filters extends React.Component {
     });
   };
 
-  onPriceChange = (e) => {
-      e.preventDefault();
-      this.setState({
-          value: e.value
-      });
+  onFilterSubmit = (e) => {
+    e.preventDefault();
+    let range = this.state.value;
+    let color = this.state.selectedColor;
+    let sizeLists = this.getAllSizes();
+    console.log(sizeLists);
+    this.setState({ sendRange: range, sendColor: color, sendSize: sizeLists });
+  };
+
+  onSliderChange = (e) => {
+    this.setState({ value: e });
+  };
+
+  colorSelected = (e) => {
+    let item = document.getElementById(e);
+    item.style.border = "solid #000000";
+    this.setState({ selectedColor: e });
+  };
+
+  onSizeSelected = (e) => {
+    e.preventDefault();
+    e.target.style.backgroundColor = "#ABABAB";
+    this.setState({ [e.target.name]: true });
+  };
+
+  getAllSizes() {
+    let lists = [];
+    if (this.state.s) lists.push("S");
+    if (this.state.m) lists.push("M");
+    if (this.state.l) lists.push("L");
+    if (this.state.xl) lists.push("XL");
+    if (this.state.xxl) lists.push("XXL");
+    if (this.state.xxxl) lists.push("XXXL");
+    return lists;
   }
 
   render() {
+    let colors = this.state.colors.map((color) => {
+      return (
+        <div class="cs-item" style={{ width: "52px", height: "40px" }}>
+          <div
+            id={color}
+            style={{
+              backgroundColor: color,
+              width: "30px",
+              height: "30px",
+              mozBorderRadius: "50px",
+              webkitBorderRadius: "50px",
+              borderRadius: "50px",
+              cursor: "pointer",
+              float: "inherit",
+            }}
+            onClick={() => this.colorSelected(color)}
+          />
+        </div>
+      );
+    });
     return (
       <div>
         <section class="product-shop spad">
           <div class="container">
             <div class="row">
               <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
-                <div class="filter-widget">
-                  <h4 class="fw-title">Price</h4>
-
-                  <Progress max={this.state.maxPrice} />
-
-                  <button
-                    style={{ border: "none" }}
-                    onClick={this.onPriceChange}
-                    class="filter-btn"
-                  >
-                    Filter
-                  </button>
-                </div>
-                <div class="filter-widget">
-                  <h4 class="fw-title">Color</h4>
-                  <div>colors</div>
-                  {/* <div class="fw-color-choose">{colors}</div> */}
-                </div>
-                <br />
                 <div class="filter-widget">
                   <h4 class="fw-title">Size</h4>
                   <div>
@@ -221,6 +258,63 @@ class Filters extends React.Component {
                     </button>
                   </div>
                 </div>
+
+                <div class="filter-widget">
+                  <h4 class="fw-title">Color</h4>
+
+                  <div class="fw-color-choose">{colors}</div>
+                </div>
+                <br />
+                <div class="filter-widget">
+                  <h4 class="fw-title">Price</h4>
+
+                  <div class="filter-range-wrap">
+                    <div class="range-slider" style={{ height: "30px" }}>
+                      <div class="price-input">
+                        <input
+                          id="lower"
+                          type="text"
+                          style={{
+                            width: "140px",
+                            height: "30px",
+                            float: "left",
+                          }}
+                          value={this.state.value[0]}
+                        ></input>
+                        <input
+                          id="upper"
+                          type="text"
+                          style={{
+                            width: "140px",
+                            height: "30px",
+                            float: "right",
+                          }}
+                          value={this.state.value[1]}
+                        ></input>
+                      </div>
+                    </div>
+                    <div style={{ height: "30px", width: "210px" }}>
+                      <Range
+                        id="priceRange"
+                        min={this.state.lower}
+                        max={this.state.upper}
+                        value={this.state.value}
+                        step="50"
+                        onChange={this.onSliderChange}
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    style={{ border: "none" }}
+                    onClick={this.onFilterSubmit}
+                    class="filter-btn"
+                  >
+                    Filter
+                  </button>
+                </div>
+
+                <br />
               </div>
               <div class="col-lg-9 order-1 order-lg-2">
                 <div class="product-show-option">
@@ -257,7 +351,14 @@ class Filters extends React.Component {
                     </div>
                   </div>
                 </div>
-                <Data sort={this.state.sort} limit={this.state.limit} />
+
+                <Data
+                  sort={this.state.sort}
+                  limit={this.state.limit}
+                  priceRange={this.state.sendRange}
+                  color={this.state.sendColor}
+                  size={this.state.sendSize}
+                />
 
                 <div class="loading-more">
                   <i class="icon_loading"></i>

@@ -12,76 +12,66 @@ import Register from "./pages/admin/Register";
 import Login from "./pages/Login";
 import ForgetPassword from "./pages/admin/ForgetPassword";
 
-
 //admin pages
 import AddNewItem from "./pages/admin/AddNewItem";
-import AdminHeader from './components/AdminHeader';
-import ManageItems from './pages/admin/ManageItems';
-import ManageUsers from './pages/admin/ManageUsers';
-import example from './pages/example';
-
+import AdminHeader from "./components/AdminHeader";
+import ManageItems from "./pages/admin/ManageItems";
+import ManageUsers from "./pages/admin/ManageUsers";
+import Filters from "./pages/Filters";
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-		console.log("allow value is", this.props.login);
-	}
+  constructor(props) {
+    super(props);
+    console.log("allow value is", this.props.login);
+  }
 
-	render() {
-		if (this.props.login) {
-			return (
-				<Router>
-					<div>
-						<AdminHeader />
-						<Switch>
-							<Route exact path='/' component={AddNewItem} />
-							<Route exact path='/AddNewItem' component={AddNewItem} />
-							<Route exact path='/ForgetPassword' component={ForgetPassword} />
-							<Route exact path='/Register' component={Register} />
-							<Route exact path='/ManageItems' component={ManageItems} />
-							<Route exact path='/ManageUsers' component={ManageUsers} />
-						
-						</Switch>
-					</div>
-				</Router>
-			);
-		} else {
-			return (
-				<Router>
-					<div>
-						<Header />
-						<br />
-						<Switch>
-							
-							
-							
-						<Route exact path='/example' component={example} />
-							<Route exact path='/AddNewItem' component={AddNewItem} />
-						
-							<Route exact={true} path='/' component={Home} />
-							<Route exact path='/Home' component={Home} />
-							<Route exact path='/Kurta' component={Kurta} />
-							<Route exact path='/KurtaPlazo' component={KurtaPlazo} />
-							<Route exact path='/ALineKurta' component={ALineKurta} />
-							<Route exact path='/Dupatta' component={Dupatta} />
-							<Route exact path='/ManageItems' component={ManageItems} />
-							<Route exact path='/ManageUsers' component={ManageUsers} />
+  render() {
+    if (this.props.login) {
+      return (
+        <Router>
+          <div>
+            <AdminHeader />
+            <Switch>
+              <Route exact path="/" component={AddNewItem} />
+              <Route exact path="/AddNewItem" component={AddNewItem} />
+              <Route exact path="/ForgetPassword" component={ForgetPassword} />
+              <Route exact path="/Register" component={Register} />
+              <Route exact path="/ManageItems" component={ManageItems} />
+              <Route exact path="/ManageUsers" component={ManageUsers} />
+            </Switch>
+          </div>
+        </Router>
+      );
+    } else {
+      return (
+        <Router>
+          <div>
+            <Header />
+            <br />
+            <Switch>
+              <Route exact path="/Filters" component={Filters} />
+              <Route exact path="/AddNewItem" component={AddNewItem} />
 
-							<Route exact path='/Login' component={Login} />
+              <Route exact={true} path="/" component={Home} />
+              <Route exact path="/Home" component={Home} />
+              <Route exact path="/Kurta" component={Kurta} />
+              <Route exact path="/KurtaPlazo" component={KurtaPlazo} />
+              <Route exact path="/ALineKurta" component={ALineKurta} />
+              <Route exact path="/Dupatta" component={Dupatta} />
+              <Route exact path="/ManageItems" component={ManageItems} />
+              <Route exact path="/ManageUsers" component={ManageUsers} />
 
-							<Route exact path='/ContactUs' component={ContactUs} />
+              <Route exact path="/Login" component={Login} />
 
-							
-						</Switch>
-						<br />
-						<Footer />
-					</div>
-				</Router>
-			);
-
-		}
-
-	}
+              <Route exact path="/ContactUs" component={ContactUs} />
+            </Switch>
+            <br />
+            <Footer />
+          </div>
+        </Router>
+      );
+    }
+  }
 }
 
 export default App;

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Details from "./Details";
-import Progress from "./Progress";
+
 
 
 
@@ -153,7 +153,7 @@ class Kurta extends React.Component {
                   <div class="filter-widget">
                     <h4 class="fw-title">Price</h4>
 
-                    <Progress />
+                 
 
                     <button
                       style={{ border: "none" }}
