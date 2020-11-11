@@ -49,7 +49,7 @@ class Details extends React.Component {
 					// <div class='pt active' data-imgbigurl={img}>
 					// 	<img src={img} style={{width:"100%", height: "700px"}} alt='' onClick={this.onImageClicked(img)} />
 					// </div>
-					<div style={{ height: "600px" }}>
+					<div >
 						<img src={img} />
 					</div>
 				);
@@ -88,11 +88,11 @@ class Details extends React.Component {
 							<div class='row'>
 								<div class='col-lg-12'>
 									<div class='row'>
-										<div class='col-lg-6' style={{ height: "700px" }}>
+										<div class='col-lg-6' >
 											<Carousel
 												autoPlay
 												interval='5000'
-												style={{ height: "700px" }}>
+												style={{  width:"500px" }}>
 												{images}
 											</Carousel>
 										</div>

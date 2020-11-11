@@ -15,7 +15,7 @@ class Data extends React.Component {
   componentDidMount() {
     if (this.props.selectedSort) {
       axios
-        .get("http://localhost:3001/items/getSortedItems/" + "Kurta", {
+        .get("http://localhost:3001/items/getSortedItems/" + this.props.category, {
           params: {
             sort: this.props.selectedSort,
             limit: this.props.selectedLimit || "100",
@@ -75,7 +75,7 @@ class Data extends React.Component {
                     <img
                       src={it.imgCollection[0]}
                       alt=""
-                      style={{ width: "260px", height: "353px" }}
+                      style={{ width: "260px", height: "353px", cursor:"pointer" }}
                       onClick={() => this.imageClick(it._id)}
                     />
                   </a>

@@ -10,8 +10,8 @@ const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 
 class Filters extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       sort: "",
       limit: "",
@@ -358,12 +358,10 @@ class Filters extends React.Component {
                   priceRange={this.state.sendRange}
                   color={this.state.sendColor}
                   size={this.state.sendSize}
+                  category={this.props.category}
                 />
 
-                <div class="loading-more">
-                  <i class="icon_loading"></i>
-                  <a href="#">Loading More</a>
-                </div>
+              
               </div>
             </div>
           </div>
