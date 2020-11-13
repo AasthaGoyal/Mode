@@ -121,6 +121,7 @@ class ManageItems extends React.Component {
 										<img
 											src={it.imgCollection[0]}
 											alt=''
+											style={{ width: "260px", height: "353px", cursor:"pointer" }}
 											onClick={() => this.imageClick(it._id)}
 										/>
 									</a>

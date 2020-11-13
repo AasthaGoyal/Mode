@@ -5,44 +5,54 @@ import axios from "axios";
 class Data extends React.Component {
   constructor(props) {
     super(props);
+    console.log("reaching", this.props.submitted);
     this.state = {
       showDetails: false,
       item: [],
     };
-    console.log(this.props.category);
   }
 
   componentDidMount() {
-    if (this.props.selectedSort) {
-      axios
-        .get("http://localhost:3001/items/getSortedItems/" + this.props.category, {
-          params: {
-            sort: this.props.selectedSort,
-            limit: this.props.selectedLimit || "100",
-          },
-        })
-        .then((res) => {
-          if (res.data.success === true) {
-            this.setState({ item: res.data.data });
-          } else {
-            alert("Some error occured ", res.error);
-          }
-        })
-        .catch((err) => console.log("Some error occured", err));
-    } else {
-      axios
-        .get("http://localhost:3001/items/getItemByCategory/" + "Kurta")
-        .then((res) => {
-          if (res.data.success === true) {
-            this.setState({
-              item: res.data.data,
-            });
-          } else {
-            alert("Some error occured ", res.error);
-          }
-        })
-        .catch((err) => console.log("Some error occured", err));
-    }
+    console.log("got it", this.props.submitted);
+    this.props.submitted
+      ? this.getAllData()
+      : axios
+          .get(
+            "http://localhost:3001/items/getSortedItems/" + this.props.category,
+            {
+              params: {
+                sort: this.props.sort || "1",
+                limit: this.props.limit || "100",
+                price: this.props.priceRange,
+                color: this.props.color,
+                size: this.props.size,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res);
+            if (res.data.success === true) {
+              this.setState({ item: res.data.data });
+            } else {
+              alert("Some error occured ", res.error);
+            }
+          })
+          .catch((err) => console.log("Some error occured", err));
+  }
+
+  getAllData() {
+    axios
+      .get("http://localhost:3001/items/getItemByCategory/" + "Kurta")
+      .then((res) => {
+        if (res.data.success === true) {
+          this.setState({
+            item: res.data.data,
+          });
+        } else {
+          alert("Some error occured ", res.error);
+        }
+      })
+      .catch((err) => console.log("Some error occured", err));
   }
 
   imageClick = (id) => {
@@ -50,10 +60,10 @@ class Data extends React.Component {
       showDetails: true,
       itemId: id,
     });
-   
   };
 
   render() {
+    console.log("received but late", this.props.submitted);
     if (this.state.showDetails) {
       return <Details itemId={this.state.itemId} />;
     } else {
@@ -75,7 +85,11 @@ class Data extends React.Component {
                     <img
                       src={it.imgCollection[0]}
                       alt=""
-                      style={{ width: "260px", height: "353px", cursor:"pointer" }}
+                      style={{
+                        width: "260px",
+                        height: "353px",
+                        cursor: "pointer",
+                      }}
                       onClick={() => this.imageClick(it._id)}
                     />
                   </a>
@@ -104,14 +118,99 @@ class Data extends React.Component {
         );
       }
     }
-    //     return (
-    //       <div>
-    //         Hi i m one {this.props.sort} and limit {this.props.limit} and price rnge{" "}
-    //         {this.props.priceRange} and color {this.props.color} and size{" "}
-    //         {this.props.size}
-    //       </div>
-    //     );
   }
 }
+
+// class Data extends React.Component {
+//   constructor(props) {
+//     super(props);
+//   }
+
+//   componentDidMount() {
+//     console.log(this.props.priceRange);
+//     axios
+//       .get(
+//         "http://localhost:3001/items/getSortedItems/" + this.props.category,
+//         {
+//           params: {
+//             sort: this.props.sort || "1",
+//             limit: this.props.limit || "100",
+//             price: this.props.priceRange,
+//             color: this.props.color,
+//             size: this.props.size,
+//           },
+//         }
+//       )
+//       .then((res) => {
+//         console.log(res);
+//         if (res.data.success === true) {
+//           this.setState({ item: res.data.data });
+//         } else {
+//           alert("Some error occured ", res.error);
+//         }
+//       })
+//       .catch((err) => console.log("Some error occured", err));
+//     // } else {
+//     //   axios
+//     //     .get("http://localhost:3001/items/getItemByCategory/" + "Kurta")
+//     //     .then((res) => {
+//     //       if (res.data.success === true) {
+//     //         this.setState({
+//     //           item: res.data.data,
+//     //         });
+//     //       } else {
+//     //         alert("Some error occured ", res.error);
+//     //       }
+//     //     })
+//     //     .catch((err) => console.log("Some error occured", err));
+//     // }
+//   }
+
+//     return (
+//       <div>
+//         Hi i m one {this.props.sort} and limit {this.props.limit} and price rnge{" "}
+//         {this.props.priceRange} and color {this.props.color} and size{" "}
+//         {this.props.size}
+//       </div>
+//     );
+
+// const PlayData = (props) => {
+
+//   const [items, setItems] = useState([]);
+//     console.log(props.price);
+//   props.price && axios
+//     .get("http://localhost:3001/items/getSortedItems/" + props.category, {
+//       params: {
+//         sort: props.sort || "1",
+//         limit: props.limit || "100",
+//         price: props.price,
+//         color: props.color,
+//         size: props.size,
+//       },
+//     })
+//     .then((res) => {
+//       console.log(res);
+//       if (res.data.success === true) {
+//         let list = res.data.data;
+//         setItems([...items, { list }]);
+//       } else {
+//         alert("Some error occured ", res.error);
+//       }
+//     })
+//     .catch((err) => console.log("Some error occured", err));
+
+//     console.log(items);
+
+//     return (
+//        <div>
+//            {/* <ul>
+//                {items.map(item => (
+//                    <li key={item._id}> {item.name} </li>
+//                ))}
+//            </ul> */}
+//            i m here
+//        </div>
+//     )
+// };
 
 export default Data;

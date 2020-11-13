@@ -1,17 +1,18 @@
 import Slider from "rc-slider";
 import React from "react";
 import axios from "axios";
+import Data from "./Data";
 
 import "rc-slider/assets/index.css";
-
-import Data from "./Data";
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 
+
 class Filters extends React.Component {
   constructor(props) {
     super(props);
+    console.log("Filters ", this.props.category);
     this.state = {
       sort: "",
       limit: "",
@@ -29,6 +30,7 @@ class Filters extends React.Component {
       xl: false,
       xxl: false,
       xxxl: false,
+      formSubmit: false,
     };
 
     this.onFilterSubmit = this.onFilterSubmit.bind(this);
@@ -98,7 +100,8 @@ class Filters extends React.Component {
     let range = this.state.value;
     let color = this.state.selectedColor;
     let sizeLists = this.getAllSizes();
-    console.log(sizeLists);
+    this.setState({ formSubmit: true });
+
     this.setState({ sendRange: range, sendColor: color, sendSize: sizeLists });
   };
 
@@ -130,6 +133,7 @@ class Filters extends React.Component {
   }
 
   render() {
+    console.log("form submit value", this.state.formSubmit);
     let colors = this.state.colors.map((color) => {
       return (
         <div class="cs-item" style={{ width: "52px", height: "40px" }}>
@@ -150,6 +154,7 @@ class Filters extends React.Component {
         </div>
       );
     });
+
     return (
       <div>
         <section class="product-shop spad">
@@ -265,6 +270,7 @@ class Filters extends React.Component {
                   <div class="fw-color-choose">{colors}</div>
                 </div>
                 <br />
+                <br />
                 <div class="filter-widget">
                   <h4 class="fw-title">Price</h4>
 
@@ -352,16 +358,18 @@ class Filters extends React.Component {
                   </div>
                 </div>
 
-                <Data
-                  sort={this.state.sort}
-                  limit={this.state.limit}
-                  priceRange={this.state.sendRange}
-                  color={this.state.sendColor}
-                  size={this.state.sendSize}
-                  category={this.props.category}
-                />
-
-              
+                {this.state.formSubmit ? (
+                  <Data
+                    key={this.state.sendRange}
+                    submitted={this.state.formSubmit}
+                    sort={this.state.sort}
+                    limit={this.state.limit}
+                    priceRange={this.state.sendRange}
+                    color={this.state.sendColor}
+                    size={this.state.sendSize}
+                    category={this.props.category}
+                  />
+                ) : null}
               </div>
             </div>
           </div>

@@ -85,7 +85,6 @@ router.get("/getAllItems", (req, res, next) => {
 });
 
 router.get("/getItemById/:id", (req, res, next) => {
-  console.log("the id is", req.params.id);
   Item.findById(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
     if (err) res.send(err);
     res.status(200).json({
@@ -97,44 +96,57 @@ router.get("/getItemById/:id", (req, res, next) => {
 
 router.get("/getSortedItems/:category", (req, res, next) => {
   console.log("params are", req.query, "category is", req.params.category);
+  
+  Item.find(
+    {
+      category: req.params.category,
+      price: {
+        $gte: req.query.price[0],
+        $lte: req.query.price[1]
+      },
+      color: req.query.color
+      
+    },
+    (err, data) => {
+      if (err) {
+        return res.send.json({
+          success: false,
+          error: err,
+        });
+      }
 
-  Item.find({ category: req.params.category }, (err, data) => {
-    if (err) {
-      return res.send.json({
-        success: false,
-        error: err,
+      res.status(200).json({
+        success: true,
+        data,
       });
     }
-
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  })
+  )
     .sort({ price: JSON.parse(req.query.sort) })
     .limit(JSON.parse(req.query.limit));
 });
 
-router.get("/getFilters", (req,res,next) => {
-  Item.find({}).select({"price":1}).sort({"price": -1}).limit(1).exec(function(err, docs){
-    console.log(docs);
-    if (err) {
-      return res.send.json({
-        success: false,
-        error: err,
+router.get("/getFilters", (req, res, next) => {
+  Item.find({})
+    .select({ price: 1 })
+    .sort({ price: -1 })
+    .limit(1)
+    .exec(function (err, docs) {
+      console.log(docs);
+      if (err) {
+        return res.send.json({
+          success: false,
+          error: err,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        price: docs[0].price,
       });
-    }
-
-    res.status(200).json({
-      success: true,
-      price: docs[0].price,
     });
-  });
-})
-
+});
 
 router.get("/getItemByCategory/:category", (req, res, next) => {
-  console.log(req.params.category);
   Item.find({ category: req.params.category }, (err, data) => {
     if (err) {
       return res.send.json({
