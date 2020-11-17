@@ -133,7 +133,7 @@ class Filters extends React.Component {
   }
 
   render() {
-    console.log("form submit value", this.state.formSubmit);
+    
     let colors = this.state.colors.map((color) => {
       return (
         <div class="cs-item" style={{ width: "52px", height: "40px" }}>
@@ -358,9 +358,11 @@ class Filters extends React.Component {
                   </div>
                 </div>
 
+                {this.state.sort.length > 0 ? <Data key={this.state.sort} sort={this.state.sort} category={this.props.category}/> : null}
+                {this.state.limit  ? <Data key={this.state.limit} limit={this.state.limit} category={this.props.category}/> : null}
                 {this.state.formSubmit ? (
                   <Data
-                    key={this.state.sendRange}
+                    key={this.state.formSubmit}
                     submitted={this.state.formSubmit}
                     sort={this.state.sort}
                     limit={this.state.limit}

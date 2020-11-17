@@ -2,7 +2,7 @@ var express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const createError = require("http-errors");
-const config = require("/config.js");
+const config = require("./config.js");
 const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage");
 const crypto = require("crypto");
@@ -39,10 +39,10 @@ try {
   console.log("some error", error);
 }
 
-corsOptions = {
-  origin: "http://127.0.0.1/3000",
-  optionSuccessStatus: 200
-};
+// corsOptions = {
+//   origin: "http://127.0.0.1/3000",
+//   optionSuccessStatus: 200
+// };
 // const storage = new GridFsStorage({
 // 	url: config.mongoURI,
 // 	file: (req, file) => {
@@ -70,7 +70,7 @@ app.use("/users", userRouter);
 //app.use("/items", itemRouter(upload));
 
 app.use("/items", itemRouter);
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

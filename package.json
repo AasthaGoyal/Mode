@@ -1,5 +1,5 @@
 {
-  "name": "mode-retry",
+  "name": "mode",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,14 +7,12 @@
     "client": "cd client && npm start",
     "server": "cd server && npm start",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client  && npm run build --prefix client"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AasthaGoyal/Mode.git"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -22,31 +20,18 @@
   },
   "homepage": "https://github.com/AasthaGoyal/Mode#readme",
   "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^5.15.1",
-    "@fortawesome/react-fontawesome": "^0.1.11",
     "@super-effective/react-color-picker": "^1.2.0",
-    "cloudinary": "^1.23.0",
     "concurrently": "^5.3.0",
-    "dotenv": "^8.2.0",
-    "gridfs-stream": "^1.1.1",
     "mongoose": "^5.10.14",
     "multer": "^1.4.2",
     "multer-gridfs-storage": "^4.2.0",
-    "pug": "^3.0.0",
-    "rc-slider": "^9.6.1",
+    "rc-slider": "^9.6.2",
     "react-alice-carousel": "^2.0.2",
     "react-bootstrap": "^1.4.0",
     "react-color": "^2.19.3",
     "react-horizontal-scrolling-menu": "^0.7.8",
-    "react-input-color": "^3.0.1",
     "react-responsive-carousel": "^3.2.10",
     "react-select": "^3.1.0",
     "uuid": "^8.3.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.4"
-  },
-  "engines": {
-    "node": "10.19.0"
   }
 }

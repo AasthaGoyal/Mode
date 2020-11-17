@@ -96,7 +96,7 @@ class Register extends React.Component {
 										<div className='group-input'>
 											<label for='pass'>Password *</label>
 											<input
-												type='text'
+												type='password'
 												id='password'
 												name='password'
 												onChange={this.onChange}
@@ -107,7 +107,7 @@ class Register extends React.Component {
 										<div className='group-input'>
 											<label for='con-pass'>Confirm Password *</label>
 											<input
-												type='text'
+												type='password'
 												id='cpassword'
 												name='cpassword'
 												onChange={this.onChange}

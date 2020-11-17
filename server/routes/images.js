@@ -1,7 +1,7 @@
 let express = require("express"),
   multer = require("multer"),
   mongoose = require("mongoose"),
-  uuidv4 = require("uuid/v4"),
+  // uuidv4 = require("uuid/v4"),
   router = express.Router();
 
 const DIR = "./uploads";
@@ -96,16 +96,10 @@ router.get("/getItemById/:id", (req, res, next) => {
 
 router.get("/getSortedItems/:category", (req, res, next) => {
   console.log("params are", req.query, "category is", req.params.category);
-  
+
   Item.find(
     {
       category: req.params.category,
-      price: {
-        $gte: req.query.price[0],
-        $lte: req.query.price[1]
-      },
-      color: req.query.color
-      
     },
     (err, data) => {
       if (err) {
@@ -125,13 +119,70 @@ router.get("/getSortedItems/:category", (req, res, next) => {
     .limit(JSON.parse(req.query.limit));
 });
 
+router.get("/getFilteredItems/:category", (req, res, next) => {
+  console.log("params are", req.query, "category is", req.params.category);
+
+  Item.find(
+    {
+      category: req.params.category,
+      price: {
+        $gte: 200,
+        $lte: 3000,
+      },
+      color: "#ffe900",
+      size: "S, M",
+    },
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        return res.send.json({
+          success: false,
+          error: err,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data,
+      });
+    }
+  );
+});
+
+router.get("/getSizeFiltered", (req, res, next) => {
+  console.log("sizes received", req.query);
+  req.query.size.map((sz) => {
+    Item.aggregate(
+      [
+        {
+          $unwind: "$size",
+        },
+        {
+          $match: {
+            size: sz,
+          },
+        },
+      ],
+      (err, data) => {
+        console.log(data);
+
+        // res.status(200).json({
+        //   success: true,
+        //   data,
+        // });
+        res.send(data);
+      }
+    )
+    .catch(err => console.error(err));
+  });
+});
+
 router.get("/getFilters", (req, res, next) => {
   Item.find({})
     .select({ price: 1 })
     .sort({ price: -1 })
     .limit(1)
     .exec(function (err, docs) {
-      console.log(docs);
       if (err) {
         return res.send.json({
           success: false,

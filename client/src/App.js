@@ -10,7 +10,7 @@ import ContactUs from "./pages/ContactUs";
 import React from "react";
 import Register from "./pages/admin/Register";
 import Login from "./pages/Login";
-import ForgetPassword from "./pages/admin/ForgetPassword";
+
 
 //admin pages
 import AddNewItem from "./pages/admin/AddNewItem";
@@ -34,7 +34,7 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/" component={AddNewItem} />
               <Route exact path="/AddNewItem" component={AddNewItem} />
-              <Route exact path="/ForgetPassword" component={ForgetPassword} />
+            
               <Route exact path="/Register" component={Register} />
               <Route exact path="/ManageItems" component={ManageItems} />
               <Route exact path="/ManageUsers" component={ManageUsers} />

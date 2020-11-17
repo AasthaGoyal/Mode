@@ -5,7 +5,6 @@ import axios from "axios";
 class Data extends React.Component {
   constructor(props) {
     super(props);
-    console.log("reaching", this.props.submitted);
     this.state = {
       showDetails: false,
       item: [],
@@ -13,34 +12,71 @@ class Data extends React.Component {
   }
 
   componentDidMount() {
-    console.log("got it", this.props.submitted);
-    this.props.submitted
-      ? this.getAllData()
-      : axios
-          .get(
-            "http://localhost:3001/items/getSortedItems/" + this.props.category,
-            {
-              params: {
-                sort: this.props.sort || "1",
-                limit: this.props.limit || "100",
-                price: this.props.priceRange,
-                color: this.props.color,
-                size: this.props.size,
-              },
-            }
-          )
-          .then((res) => {
-            console.log(res);
-            if (res.data.success === true) {
-              this.setState({ item: res.data.data });
-            } else {
-              alert("Some error occured ", res.error);
-            }
-          })
-          .catch((err) => console.log("Some error occured", err));
+    this.getAllData();
+    if (this.props.sort || this.props.limit) {
+      this.getSortedData();
+    }
+
+    if (this.props.priceRange || this.props.color || this.props.size) {
+      this.getFilteredData();
+    }
+  }
+
+  getFilteredData() {
+    console.log("getting filtered data");
+    console.log(this.props.color, this.props.size, this.props.priceRange);
+    axios
+      .get(
+        "http://localhost:3001/items/getSizeFiltered",
+        {
+          params: {
+            size: this.props.size,
+          },
+          // params: {
+          //   sort: this.props.sort,
+          //   limit: this.props.limit,
+          //   price: this.props.priceRange,
+          //   color: this.props.color,
+          //   size: this.props.size,
+          // },
+        } 
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.data.success === true) {
+          this.setState({ item: res.data.data });
+        } else {
+          alert("Some error occured ", res.error);
+        }
+      })
+      .catch((err) => console.log("Some error occured", err));
+  }
+
+  getSortedData() {
+    console.log("getting sorted data");
+    axios
+      .get(
+        "http://localhost:3001/items/getSortedItems/" + this.props.category,
+        {
+          params: {
+            sort: this.props.sort || "1",
+            limit: this.props.limit || "100",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.data.success === true) {
+          this.setState({ item: res.data.data });
+        } else {
+          alert("Some error occured ", res.error);
+        }
+      })
+      .catch((err) => console.log("Some error occured", err));
   }
 
   getAllData() {
+    console.log("getting all data");
     axios
       .get("http://localhost:3001/items/getItemByCategory/" + "Kurta")
       .then((res) => {
@@ -63,7 +99,6 @@ class Data extends React.Component {
   };
 
   render() {
-    console.log("received but late", this.props.submitted);
     if (this.state.showDetails) {
       return <Details itemId={this.state.itemId} />;
     } else {
