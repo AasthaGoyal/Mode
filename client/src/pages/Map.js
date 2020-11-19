@@ -5,7 +5,7 @@ import locationIcon from "@iconify/icons-mdi/map-marker";
 
 const Map = ({ location, zoomLevel }) => (
   <GoogleMapReact
-    bootstrapURLKeys={{ key: process.env.REACT_APP_APIKEY }}
+    bootstrapURLKeys={{ key: process.env.REACT_APP_API_KEY }}
     defaultCenter={location}
     defaultZoom={zoomLevel}
   >

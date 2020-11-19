@@ -7,6 +7,7 @@ import { validateFields } from "./ValidateFields";
 import classnames from "classnames";
 import Form1 from "./Form1";
 
+require("dotenv").config();
 // const contactUsSchema = Yup.object().shape({
 //   name: Yup.string().required("Required"),
 //   email: Yup.string().email("Invalid email").required("Required"),
@@ -60,7 +61,8 @@ const location = {
 class ContactUs extends React.Component {
   constructor() {
     super();
-    this.state = initialState;
+	this.state = initialState;
+	
   }
 
   handleBlur(validationFunc, evt) {
@@ -108,7 +110,7 @@ class ContactUs extends React.Component {
       // clear state and show all fields are validated
       this.setState({ allFieldsValidated: true });
       this.showAllFieldsValidated();
-      emailjs.init("user_JOFzoVBbkzJ67ZvfPdjko");
+      emailjs.init(process.env.REACT_APP_USER_ID);
 
 	  console.log('the states are', name, email, message );
       let templateParams = {
@@ -125,7 +127,7 @@ class ContactUs extends React.Component {
           "default_service",
           "mode_template",
           templateParams,
-          "user_JOFzoVBbkzJ67ZvfPdjko"
+          process.env.REACT_APP_USER_ID
         )
         .then((res) =>
           res.status === 200
@@ -164,7 +166,7 @@ class ContactUs extends React.Component {
 
   showAllFieldsValidated() {
     setTimeout(() => {
-      this.setState({ allFieldsValidated: false });
+      this.setState({ allFieldsValidated: false , ...initialState});
     }, 5000);
   }
 
