@@ -114,4 +114,17 @@ router.post("/removeData", function (req, res) {
 	});
 });
 
+router.get("/resetPassword/:email", function(req,res) {
+	UserModel.get({email: req.params.email}, function(err, data){
+		if(err)
+		{
+			res.send(err);
+		}
+		else{
+			console.log(data);
+			res.send({pass:data });
+		}
+	})
+})
+
 module.exports = router;
