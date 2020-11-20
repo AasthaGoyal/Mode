@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
 
 class ManageUsers extends React.Component {
   constructor() {
@@ -26,7 +27,7 @@ class ManageUsers extends React.Component {
           ? alert(res.data.message)
           : alert("Some error occured")
       );
-     window.location.reload(false);
+    window.location.reload(false);
   };
 
   render() {
@@ -80,9 +81,14 @@ class ManageUsers extends React.Component {
               <div class="row">
                 <div class="col-lg-12">
                   <div class="breadcrumb-text">
-                    <a href="#">
-                      <i class="fa fa-home"></i> Admin login
-                    </a>
+                    <NavLink
+                      exact
+                      className="login-panel"
+                      activeClassName="is-active"
+                      to="/Login"
+                    >
+                      <i className="fa fa-home"></i>Admin Login
+                    </NavLink>
                     <span>Edit/Delete Users</span>
                   </div>
                 </div>

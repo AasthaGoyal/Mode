@@ -1,7 +1,6 @@
 import React from "react";
 import Details from "./Details";
 import axios from "axios";
-import ImageSlider from './ImageSlider';
 
 class Home extends React.Component {
 	constructor() {
@@ -91,7 +90,7 @@ class Home extends React.Component {
 				return (
 					<div class='loading-more'>
 						<i class='icon_loading'></i>
-						<a href='#'>Loading More</a>
+						Loading More
 					</div>
 				);
 			} else {

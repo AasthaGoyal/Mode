@@ -2,12 +2,12 @@ import Slider from "rc-slider";
 import React from "react";
 import axios from "axios";
 import Data from "./Data";
+import { NavLink } from "react-router-dom";
 
 import "rc-slider/assets/index.css";
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
-
 
 class Filters extends React.Component {
   constructor(props) {
@@ -45,7 +45,6 @@ class Filters extends React.Component {
     axios
       .get("http://localhost:3001/items/getFilters")
       .then((res) => {
-        console.log(res);
         if (res.data.success === true) {
           this.setState({ upper: res.data.price });
         } else {
@@ -58,16 +57,18 @@ class Filters extends React.Component {
   getColors() {
     let colorLists = [];
     axios
-      .get("http://localhost:3001/items/getItemByCategory/" + "Kurta")
+      .get(
+        "http://localhost:3001/items/getItemByCategory/" + this.props.category
+      )
       .then((res) => {
         if (res.data.success === true) {
           this.setState({ limit: res.data.data.length });
-          res.data.data.map((ex) => {
-            colorLists.push(ex.color);
-          });
+          res.data.data.map(ex => 
+            colorLists.push(ex.color)
+          );
 
           let uniqueColors = colorLists.filter((val, id, array) => {
-            return array.indexOf(val) == id;
+            return array.indexOf(val) === id;
           });
 
           this.setState({
@@ -133,7 +134,6 @@ class Filters extends React.Component {
   }
 
   render() {
-    
     let colors = this.state.colors.map((color) => {
       return (
         <div class="cs-item" style={{ width: "52px", height: "40px" }}>
@@ -157,11 +157,39 @@ class Filters extends React.Component {
 
     return (
       <div>
+        <div class="breacrumb-section">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                  <NavLink
+                    exact
+                    className="login-panel"
+                    activeClassName="is-active"
+                    to="/Home"
+                  >
+                    <i className="fa fa-home"></i>Home
+                  </NavLink>
+                  <NavLink
+                    exact
+                    className="login-panel"
+                    activeClassName="is-active"
+                    to={`/${this.props.category}`}
+                  >
+                    <span> {this.props.category}</span>
+                  </NavLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <section class="product-shop spad">
+        <form noValidate >
           <div class="container">
             <div class="row">
               <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
                 <div class="filter-widget">
+                  
                   <h4 class="fw-title">Size</h4>
                   <div>
                     <button
@@ -262,6 +290,7 @@ class Filters extends React.Component {
                       XXXL
                     </button>
                   </div>
+                 
                 </div>
 
                 <div class="filter-widget">
@@ -357,9 +386,16 @@ class Filters extends React.Component {
                     </div>
                   </div>
                 </div>
-
-                {this.state.sort.length > 0 ? <Data key={this.state.sort} sort={this.state.sort} category={this.props.category}/> : null}
-                {this.state.limit  ? <Data key={this.state.limit} limit={this.state.limit} category={this.props.category}/> : null}
+                
+                {/* {this.state.sort.length > 0 || this.state.limit.length > 0 ? (
+                  <Data
+                    key={this.state.sort}
+                    sort={this.state.sort}
+                    category={this.props.category}
+                    limit={this.state.limit}
+                  />
+                ) : null} */}
+              
                 {this.state.formSubmit ? (
                   <Data
                     key={this.state.formSubmit}
@@ -375,6 +411,7 @@ class Filters extends React.Component {
               </div>
             </div>
           </div>
+          </form>
         </section>
         <script src="js/jquery-3.3.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>

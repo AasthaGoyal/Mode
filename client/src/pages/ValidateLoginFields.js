@@ -1,13 +1,8 @@
 
 import validator from "validator";
 
-class ValidateFields  {
-  validateName(value) {
-    if (validator.isEmpty(value)) {
-      return "Name is required";
-    }
-    return false;
-  }
+class ValidateLoginFields  {
+
 
   validateEmail(value) {
     if (validator.isEmpty(value)) {
@@ -18,14 +13,14 @@ class ValidateFields  {
     return false;
   }
 
-  validateMessage(value) {
+  validatePassword(value) {
     if (validator.isEmpty(value)) {
-      return "Message is required";
+      return "Password is required";
     }
     return false;
   }
 }
 
-const validateFields = new ValidateFields();
+const validateFields = new ValidateLoginFields();
 
 export {validateFields} ;

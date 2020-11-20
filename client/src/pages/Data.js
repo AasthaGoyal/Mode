@@ -1,6 +1,7 @@
 import React from "react";
 import Details from "./Details";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
 
 class Data extends React.Component {
   constructor(props) {
@@ -12,9 +13,17 @@ class Data extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllData();
+    console.log(
+      this.props.sort,
+      this.props.limit,
+      this.props.priceRange,
+      this.props.color,
+      this.props.size
+    );
     if (this.props.sort || this.props.limit) {
       this.getSortedData();
+    } else {
+      this.getAllData();
     }
 
     if (this.props.priceRange || this.props.color || this.props.size) {
@@ -26,21 +35,18 @@ class Data extends React.Component {
     console.log("getting filtered data");
     console.log(this.props.color, this.props.size, this.props.priceRange);
     axios
-      .get(
-        "http://localhost:3001/items/getSizeFiltered",
-        {
-          params: {
-            size: this.props.size,
-          },
-          // params: {
-          //   sort: this.props.sort,
-          //   limit: this.props.limit,
-          //   price: this.props.priceRange,
-          //   color: this.props.color,
-          //   size: this.props.size,
-          // },
-        } 
-      )
+      .get("http://localhost:3001/items/getSizeFiltered", {
+        params: {
+          size: this.props.size,
+        },
+        // params: {
+        //   sort: this.props.sort,
+        //   limit: this.props.limit,
+        //   price: this.props.priceRange,
+        //   color: this.props.color,
+        //   size: this.props.size,
+        // },
+      })
       .then((res) => {
         console.log(res);
         if (res.data.success === true) {
@@ -99,8 +105,9 @@ class Data extends React.Component {
   };
 
   render() {
+  
     if (this.state.showDetails) {
-      return <Details itemId={this.state.itemId} />;
+      return <Details itemId={this.state.itemId} category={this.props.category}/>;
     } else {
       if (this.state.item.length === 0) {
         return (
@@ -145,7 +152,7 @@ class Data extends React.Component {
             </div>
           );
         });
-
+       
         return (
           <div class="product-list">
             <div class="row">{items}</div>

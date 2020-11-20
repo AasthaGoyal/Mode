@@ -5,7 +5,7 @@ import * as emailjs from "emailjs-com";
 // import * as Yup from "yup";
 import { validateFields } from "./ValidateFields";
 import classnames from "classnames";
-import Form1 from "./Form1";
+import { NavLink } from "react-router-dom";
 
 require("dotenv").config();
 // const contactUsSchema = Yup.object().shape({
@@ -61,8 +61,7 @@ const location = {
 class ContactUs extends React.Component {
   constructor() {
     super();
-	this.state = initialState;
-	
+    this.state = initialState;
   }
 
   handleBlur(validationFunc, evt) {
@@ -97,7 +96,8 @@ class ContactUs extends React.Component {
   }
 
   handleSubmit(evt) {
-    evt.preventDefault();
+	evt.preventDefault();
+	console.log('reachinf');
     // validate all fields
     const { name, email, message } = this.state;
     const nameError = validateFields.validateName(name.value);
@@ -108,11 +108,10 @@ class ContactUs extends React.Component {
       console.log("success");
 
       // clear state and show all fields are validated
-      this.setState({ allFieldsValidated: true });
-      this.showAllFieldsValidated();
+
       emailjs.init(process.env.REACT_APP_USER_ID);
 
-	  console.log('the states are', name, email, message );
+      console.log("the states are", name, email, message);
       let templateParams = {
         email: email.value,
         to: "mgarg063@gmail.com",
@@ -142,6 +141,8 @@ class ContactUs extends React.Component {
             result: "Some error occured, please contact admin",
           })
         );
+      this.setState({ allFieldsValidated: true });
+      this.showAllFieldsValidated();
     } else {
       // update the state with errors
       this.setState((state) => ({
@@ -166,7 +167,7 @@ class ContactUs extends React.Component {
 
   showAllFieldsValidated() {
     setTimeout(() => {
-      this.setState({ allFieldsValidated: false , ...initialState});
+      this.setState({ allFieldsValidated: false, ...initialState });
     }, 5000);
   }
 
@@ -179,9 +180,15 @@ class ContactUs extends React.Component {
             <div class="row">
               <div class="col-lg-12">
                 <div class="breadcrumb-text">
-                  <a href="#">
-                    <i class="fa fa-home"></i> Home
-                  </a>
+				<NavLink
+                  exact
+                  className="login-panel"
+                  activeClassName="is-active"
+                  to="/Home"
+                >
+                  <i className="fa fa-home"></i>Home
+                </NavLink>
+                 
                   <span>Contact Us</span>
                 </div>
               </div>
@@ -254,27 +261,21 @@ class ContactUs extends React.Component {
                     <p>
                       Our staff will call back later and answer your questions.
                     </p>
-                    {/* <Formik
-                        initialValues={{ name: "", email: "", message: "" }}
-                        onSubmit={(values) => {
-                          console.log(values);
-                        }}
-                      >
-                        {({ errors, touched, validateField, validateForm }) => ( */}
+                  
                     <div className="card-body">
                       {allFieldsValidated && (
                         <p className="text-success text-center">
-                       {this.state.result}
+                          {this.state.result}
                         </p>
                       )}
 
-                      {/* Form Starts Here */}
+                     
                       <form
                         onSubmit={(evt) => this.handleSubmit(evt)}
                         className="comment-form"
                       >
                         <div class="row">
-                          {/* Email field */}
+                          
                           <div className=" col-lg-6">
                             <input
                               type="text"
@@ -368,7 +369,6 @@ class ContactUs extends React.Component {
                           >
                             Submit
                           </button>
-
                         </div>
                       </form>
                     </div>

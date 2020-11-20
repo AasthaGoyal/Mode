@@ -2,52 +2,31 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import App from "../App";
-import { CardColumns } from "react-bootstrap";
+import { validateFields } from "./ValidateLoginFields";
+import classnames from "classnames";
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       message: "",
-      username: "",
-      pass: "",
+      email: {
+        value: "",
+        validateOnChange: false,
+        error: "",
+      },
+      password: {
+        value: "",
+        validateOnChange: false,
+        error: "",
+      },
+      submitCalled: false,
+      allFieldsValidated: false,
       allow: false,
       forgot: false,
       cemail: "",
       smessage: "",
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onSubmit(e) {
-    e.preventDefault();
-
-    axios
-      .get("http://localhost:3001/users/getUser", {
-        params: {
-          email: this.state.username,
-          password: this.state.pass,
-        },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          res.data.user.length === 0
-            ? this.setState({
-                message: "Invalid Username or password combination",
-                allow: false,
-              })
-            : this.setState({
-                message:
-                  "Successfully logged in! Welcome " + res.data.user[0].name,
-                allow: true,
-              });
-        } else {
-          this.setState({
-            message: "Some error occured" + res.message,
-          });
-        }
-      });
   }
 
   handleClose = (e) => {
@@ -64,17 +43,110 @@ class Login extends React.Component {
 
   sendEmail = (e) => {
     e.preventDefault();
-    console.log("send confirmation for", this.state.cemail);
-    this.setState({ smessage: "We have send your password to your email" });
+
+    if (this.state.cemail.length > 0) {
+      axios.get("http://localhost:3001/users/resetPassword/" + this.state.cemail)
+      .then(res => console.log(res));
+
+      this.setState({ smessage: "Check your email for further instructions " });
+      
+    } else {
+      this.setState({
+        smessage: "Please enter your registered email id to continue",
+      });
+    }
   };
 
-  onChange(e) {
-    e.preventDefault();
-    const value = e.target.value;
-    this.setState({
-      ...this.state,
-      [e.target.name]: value,
-    });
+  handleBlur(validationFunc, evt) {
+    const field = evt.target.name;
+
+    if (
+      this.state[field]["validateOnChange"] === false &&
+      this.state.submitCalled === false
+    ) {
+      this.setState((state) => ({
+        [field]: {
+          ...state[field],
+          validateOnChange: true,
+          error: validationFunc(state[field].value),
+        },
+      }));
+    }
+    return;
+  }
+
+  handleChange(validationFunc, evt) {
+    const field = evt.target.name;
+    const fieldVal = evt.target.value;
+    this.setState((state) => ({
+      [field]: {
+        ...state[field],
+        value: fieldVal,
+        error: state[field]["validateOnChange"] ? validationFunc(fieldVal) : "",
+      },
+    }));
+  }
+
+  handleSubmit(evt) {
+    evt.preventDefault();
+
+    const emailError = validateFields.validateEmail(this.state.email.value);
+    const passwordError = validateFields.validatePassword(
+      this.state.password.value
+    );
+    if ([emailError, passwordError].every((e) => e === false)) {
+      // no errors submit the form
+      console.log("success");
+      axios
+        .get("http://localhost:3001/users/getUser", {
+          params: {
+            email: this.state.email.value,
+            password: this.state.password.value,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            res.data.user.length === 0
+              ? this.setState({
+                  message: "Invalid Username or password combination",
+                  allow: false,
+                })
+              : this.setState({
+                  message:
+                    "Successfully logged in! Welcome " + res.data.user[0].name,
+                  allow: true,
+                });
+          } else {
+            this.setState({
+              message: "Some error occured" + res.message,
+            });
+          }
+        });
+
+      // clear state and show all fields are validated
+      this.setState({ allFieldsValidated: true });
+      this.showAllFieldsValidated();
+    } else {
+      // update the state with errors
+      this.setState((state) => ({
+        email: {
+          ...state.email,
+          validateOnChange: true,
+          error: emailError,
+        },
+        password: {
+          ...state.password,
+          validateOnChange: true,
+          error: passwordError,
+        },
+      }));
+    }
+  }
+
+  showAllFieldsValidated() {
+    setTimeout(() => {
+      this.setState({ allFieldsValidated: false });
+    }, 1500);
   }
 
   render() {
@@ -89,26 +161,62 @@ class Login extends React.Component {
                 <div className="col-lg-6 offset-lg-3">
                   <div className="login-form">
                     <h2>Login</h2>
-                    <form action="#">
+                    <form onSubmit={(evt) => this.handleSubmit(evt)}>
                       <div className="group-input">
                         <label for="username">
                           Username or email address *
                         </label>
                         <input
                           type="text"
-                          id="username"
-                          name="username"
-                          onChange={this.onChange}
+                          id="email"
+                          name="email"
+                          value={this.state.email.value}
+                          placeholder="Enter your email"
+                          className={classnames(
+                            "form-control",
+                            { "is-valid": this.state.email.error === false },
+                            { "is-invalid": this.state.email.error }
+                          )}
+                          onChange={(evt) =>
+                            this.handleChange(validateFields.validateEmail, evt)
+                          }
+                          onBlur={(evt) =>
+                            this.handleBlur(validateFields.validateEmail, evt)
+                          }
                         />
+                        <div className="invalid-feedback">
+                          {this.state.email.error}
+                        </div>
                       </div>
                       <div className="group-input">
                         <label for="pass">Password *</label>
                         <input
                           type="password"
-                          id="pass"
-                          name="pass"
-                          onChange={this.onChange}
+                          id="password"
+                          name="password"
+                          value={this.state.password.value}
+                          placeholder="Enter your password"
+                          className={classnames(
+                            "form-control",
+                            { "is-valid": this.state.password.error === false },
+                            { "is-invalid": this.state.password.error }
+                          )}
+                          onChange={(evt) =>
+                            this.handleChange(
+                              validateFields.validatePassword,
+                              evt
+                            )
+                          }
+                          onBlur={(evt) =>
+                            this.handleBlur(
+                              validateFields.validatePassword,
+                              evt
+                            )
+                          }
                         />
+                        <div className="invalid-feedback">
+                          {this.state.password.error}
+                        </div>
                       </div>
                       <div className="group-input gi-check">
                         <div className="gi-more">
@@ -158,17 +266,12 @@ class Login extends React.Component {
                                     </button>
                                   </div>
 
-                                  <center>
-                                    <label
-                                      style={{
-                                        color: "red",
-                                        fontWeight: "bold",
-                                      }}
-                                    >
+                                  <div>
+                                    <p className="text-success text-center">
                                       {" "}
                                       {this.state.smessage}
-                                    </label>
-                                  </center>
+                                    </p>
+                                  </div>
                                 </>
                               }
                               handleClose={this.handleClose}
@@ -188,18 +291,19 @@ class Login extends React.Component {
                       <button
                         type="submit"
                         className="site-btn login-btn"
-                        onClick={this.onSubmit}
+                        onMouseDown={() =>
+                          this.setState({ submitCalled: true })
+                        }
                       >
                         Sign In
                       </button>
                     </form>
                     <div className="switch-login">
-                      <div className="switch-login">
-                        <label style={{ color: "red", fontWeight: "bold" }}>
-                          {" "}
+                      {this.state.allFieldsValidated && (
+                        <p className="text-success text-center">
                           {this.state.message}
-                        </label>
-                      </div>
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

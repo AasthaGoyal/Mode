@@ -188,11 +188,11 @@ class Header extends React.Component {
                 <div className="col-lg-3 text-right col-md-3">
                   <ul className="nav-right">
                     <li className="heart-icon">
-                      <a href="#">
+                      {/* <a href="#">
                         <label className="input">Your saved searches</label>
                         <i className="icon_heart_alt"></i>
                         <span>1</span>
-                      </a>
+                      </a> */}
                     </li>
                   </ul>
                 </div>

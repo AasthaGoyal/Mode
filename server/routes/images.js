@@ -58,9 +58,11 @@ router.post(
       category: req.body.category,
     });
 
+    console.log('just so you know i m alive ');
     item
       .save()
       .then((result) => {
+        console.log(result);
         res.status(201).json({
           success: true,
           result,
@@ -146,7 +148,9 @@ router.get("/getFilteredItems/:category", (req, res, next) => {
         data,
       });
     }
-  );
+  )
+  .sort({ price: JSON.parse(req.query.sort)  })
+  .limit(JSON.parse(req.query.limit) );
 });
 
 router.get("/getSizeFiltered", (req, res, next) => {

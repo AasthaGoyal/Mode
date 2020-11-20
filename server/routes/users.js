@@ -104,7 +104,7 @@ router.post("/deleteUserById/:id", (req, res, next) => {
 	);
 });
 
-router.post("/removeData", function (req, res) {
+router.post("/removeData", function (req, res, next) {
 	UserModel.remove({ _id: req.body.id }, function (err) {
 		if (err) {
 			res.send(err);
@@ -115,7 +115,8 @@ router.post("/removeData", function (req, res) {
 });
 
 router.get("/resetPassword/:email", function(req,res) {
-	UserModel.get({email: req.params.email}, function(err, data){
+	console.log("paeans are", req.params);
+	UserModel.find({email: req.params.email}, function(err, data){
 		if(err)
 		{
 			res.send(err);
@@ -124,7 +125,7 @@ router.get("/resetPassword/:email", function(req,res) {
 			console.log(data);
 			res.send({pass:data });
 		}
-	})
-})
+	});
+});
 
 module.exports = router;
