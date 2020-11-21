@@ -10,16 +10,14 @@ import ContactUs from "./pages/ContactUs";
 import React from "react";
 import Register from "./pages/admin/Register";
 import Login from "./pages/Login";
-import ImageSlider from './pages/ImageSlider';
+import ImageSlider from "./pages/ImageSlider";
 
 //admin pages
 import AddNewItem from "./pages/admin/AddNewItem";
 import AdminHeader from "./components/AdminHeader";
 import ManageItems from "./pages/admin/ManageItems";
 import ManageUsers from "./pages/admin/ManageUsers";
-import Filters from "./pages/Filters";
 
-import Items from "./pages/Items";
 
 class App extends React.Component {
   constructor(props) {
@@ -36,7 +34,7 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/" component={AddNewItem} />
               <Route exact path="/AddNewItem" component={AddNewItem} />
-             
+
               <Route exact path="/Register" component={Register} />
               <Route exact path="/ManageItems" component={ManageItems} />
               <Route exact path="/ManageUsers" component={ManageUsers} />
@@ -51,11 +49,10 @@ class App extends React.Component {
             <Header />
             <br />
             <Switch>
-            <Route exact path="/Register" component={Register} />
-              <Route exact path="/Filters" component={Filters} />
+              <Route exact path="/Register" component={Register} />
+              
               <Route exact path="/ImageSlider" component={ImageSlider} />
-              <Route exact path="/AddNewItem" component={AddNewItem} />
-              <Route exact path="/Items" component={Items} />
+
               <Route exact={true} path="/" component={Home} />
               <Route exact path="/Home" component={Home} />
               <Route exact path="/Kurta" component={Kurta} />

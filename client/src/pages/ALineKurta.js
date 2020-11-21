@@ -1,9 +1,9 @@
 import React from "react";
-import Filters from "./Filters";
+import Filter from "./Filter";
 
 class ALineKurta extends React.Component {
   render() {
-    return <Filters category="A Line Kurta" />;
+    return <Filter category="A Line Kurta" />;
   }
 }
 

@@ -1,9 +1,9 @@
 import React from "react";
-import Filters from "./Filters";
+import Filter from "./Filter";
 
 class KurtaPlazo extends React.Component {
   render() {
-    return <Filters category="Kurta Plazo Set" />;
+    return <Filter category="Kurta Plazo Set" />;
   }
 }
 
