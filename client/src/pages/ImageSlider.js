@@ -2,6 +2,7 @@ import React from "react";
 import ScrollMenu from "react-horizontal-scrolling-menu";
 import axios from "axios";
 import Details from "./Details";
+import ReactDOM from "react-dom";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 const main = {
@@ -54,6 +55,31 @@ const next = {
   marginLeft: "5px",
 };
 
+const modalRoot = document.getElementById("details");
+
+class Modal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.el = document.createElement("div");
+  }
+
+  componentDidMount() {
+    modalRoot.appendChild(this.el);
+  }
+  componentWillUnmount() {
+    modalRoot.removeChild(this.el);
+  }
+
+  render() {
+    return ReactDOM.createPortal(
+      // Any valid React child: JSX, strings, arrays, etc.
+      <Details itemId={this.props.itemId} />,
+      // A DOM element
+      this.el
+    );
+  }
+}
+
 class ImageSlider extends React.Component {
   constructor(props) {
     super(props);
@@ -97,29 +123,15 @@ class ImageSlider extends React.Component {
       showDetails: true,
       itemId: id,
     });
+
+  
   };
 
   render() {
-    console.log(this.state.showDetails);
+    console.log(this.state.itemId);
     if (this.state.showDetails) {
       return (
-        <Router>
-          <Switch>
-            <Route
-              path="/Details"
-              exact
-              render={() => {
-                return (
-                  <div> This is details</div>
-                  // <Details
-                  //   itemId={this.state.itemId}
-                  //   category={this.props.category}
-                  // />
-                );
-              }}
-            />
-          </Switch>
-        </Router>
+       <Modal itemId={this.state.itemId}/>
       );
     } else {
       if (this.state.item.length === 0) {
@@ -143,9 +155,9 @@ class ImageSlider extends React.Component {
                       style={{
                         width: "260px",
                         height: "353px",
-                        cursor: "pointer",
+      
                       }}
-                      onClick={() => this.imageClick(it._id)}
+                      // onClick={() => this.imageClick(it._id)}
                     />
                   </a>
                 </div>
@@ -154,7 +166,7 @@ class ImageSlider extends React.Component {
                   <a href={it.id}>
                     <h5>
                       {" "}
-                      <label onClick={() => this.imageClick(it._id)}>
+                      <label>
                         {it.name}
                       </label>
                     </h5>

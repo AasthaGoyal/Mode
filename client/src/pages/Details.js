@@ -16,6 +16,7 @@ class Details extends React.Component {
   }
 
   componentDidMount() {
+    console.log("details is reaching");
     axios
       .get("http://localhost:3001/items/getItemById/" + this.props.itemId)
       .then(

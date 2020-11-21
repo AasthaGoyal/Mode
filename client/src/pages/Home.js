@@ -2,6 +2,7 @@ import React from "react";
 
 import ImageSlider from "./ImageSlider";
 
+
 class Home extends React.Component {
   constructor() {
     super();
@@ -18,9 +19,6 @@ class Home extends React.Component {
 
     this.onCategoryChange = this.onCategoryChange.bind(this);
   }
-
- 
- 
 
   onCategoryChange(filters) {
     console.log(filters);
