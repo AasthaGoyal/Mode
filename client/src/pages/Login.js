@@ -48,7 +48,7 @@ class Login extends React.Component {
 
     if (this.state.cemail.length > 0) {
       axios
-        .get("http://localhost:5000/users/resetPassword/" + this.state.cemail)
+        .get("users/resetPassword/" + this.state.cemail)
         .then((res) => res.data)
         .then((data) => {
           emailjs.init(process.env.REACT_APP_USER_ID);
@@ -132,7 +132,7 @@ class Login extends React.Component {
       // no errors submit the form
       console.log("success");
       axios
-        .get("http://localhost:3001/users/getUser", {
+        .get("users/getUser", {
           params: {
             email: this.state.email.value,
             password: this.state.password.value,

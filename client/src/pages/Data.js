@@ -35,7 +35,7 @@ class Data extends React.Component {
     console.log("getting filtered data");
     console.log(this.props.color, this.props.size, this.props.priceRange);
     axios
-      .get("http://localhost:3001/items/getSizeFiltered", {
+      .get("items/getSizeFiltered", {
         params: {
           size: this.props.size,
         },
@@ -62,7 +62,7 @@ class Data extends React.Component {
     console.log("getting sorted data");
     axios
       .get(
-        "http://localhost:3001/items/getSortedItems/" + this.props.category,
+        "items/getSortedItems/" + this.props.category,
         {
           params: {
             sort: this.props.sort || "1",
@@ -84,7 +84,7 @@ class Data extends React.Component {
   getAllData() {
     console.log("getting all data");
     axios
-      .get("http://localhost:3001/items/getItemByCategory/" + "Kurta")
+      .get("items/getItemByCategory/" + "Kurta")
       .then((res) => {
         if (res.data.success === true) {
           this.setState({

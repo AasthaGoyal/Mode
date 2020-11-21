@@ -13,7 +13,7 @@ class ManageUsers extends React.Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:3001/users/getAllUsers")
+      .get("users/getAllUsers")
       .then((res) => this.setState({ users: res.data }))
       .catch((err) => console.log("Some error occured", err));
   }
@@ -21,7 +21,7 @@ class ManageUsers extends React.Component {
   deleteUser = (id) => {
     console.log("id being deleted", id);
     axios
-      .post("http://localhost:3001/users/deleteUserById/" + id)
+      .post("users/deleteUserById/" + id)
       .then((res) =>
         res.data.success === true
           ? alert(res.data.message)
@@ -54,7 +54,7 @@ class ManageUsers extends React.Component {
                     width: "3",
                   }}
                 >
-                  <img src="http://localhost:3001/uploads/user.png" alt="" />
+                  <img src="uploads/user.png" alt="" />
                 </div>
 
                 <h5> {it.name}</h5>
