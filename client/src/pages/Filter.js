@@ -38,7 +38,7 @@ class Filter extends React.Component {
     let colorLists = [];
     axios
       .get(
-        "http://localhost:5000/items/getItemByCategory/" + this.props.category
+        "http://localhost:3001/items/getItemByCategory/" + this.props.category
       )
       .then((res) => {
         if (res.data.success === true) {
@@ -79,12 +79,19 @@ class Filter extends React.Component {
   }
 
   handleSizeChange(e) {
-    this.setState({ [e.target.name]: true });
+  
+    if(e.target.checked)
+    {
+      this.setState({ [e.target.name]: true });
+    } else {
+      this.setState({ [e.target.name]: false });
+    }
+   
   }
 
   getMaxPrice() {
     axios
-      .get("http://localhost:5000/items/getFilters")
+      .get("http://localhost:3001/items/getFilters")
       .then((res) => {
         if (res.data.success === true) {
           this.setState({ maxPrice: res.data.price });
@@ -96,7 +103,7 @@ class Filter extends React.Component {
   }
 
   onSliderChange(e) {
-    console.log(e);
+  
     this.setState({ value: e, minPrice: e[0], maxPrice: e[1] });
   }
 
@@ -121,6 +128,7 @@ class Filter extends React.Component {
   }
 
   render() {
+    console.log(this.state.S);
     let items = this.state.items.slice(0, this.state.limit);
     let colors = this.state.colors.map((color) => {
       return (
@@ -158,7 +166,7 @@ class Filter extends React.Component {
                 marginLeft: "10px",
                 marginRight: "10px",
                 background: "#e7ab3c",
-                color: "##e7ab3c",
+                color: "#e7ab3c",
                 fontSize: "22px",
                 float: "left",
               }}
