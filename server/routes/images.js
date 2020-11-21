@@ -1,7 +1,7 @@
 let express = require("express"),
   multer = require("multer"),
   mongoose = require("mongoose"),
-  // uuidv4 = require("uuid/v4"),
+  uuidv4 = require("uuid/v4"),
   router = express.Router();
 
 const DIR = "./uploads";
@@ -96,62 +96,62 @@ router.get("/getItemById/:id", (req, res, next) => {
   }).catch((err) => console.log(err));
 });
 
-router.get("/getSortedItems/:category", (req, res, next) => {
-  console.log("params are", req.query, "category is", req.params.category);
+// router.get("/getSortedItems/:category", (req, res, next) => {
+//   console.log("params are", req.query, "category is", req.params.category);
 
-  Item.find(
-    {
-      category: req.params.category,
-    },
-    (err, data) => {
-      if (err) {
-        return res.send.json({
-          success: false,
-          error: err,
-        });
-      }
+//   Item.find(
+//     {
+//       category: req.params.category,
+//     },
+//     (err, data) => {
+//       if (err) {
+//         return res.send.json({
+//           success: false,
+//           error: err,
+//         });
+//       }
 
-      res.status(200).json({
-        success: true,
-        data,
-      });
-    }
-  )
-    .sort({ price: JSON.parse(req.query.sort) })
-    .limit(JSON.parse(req.query.limit));
-});
+//       res.status(200).json({
+//         success: true,
+//         data,
+//       });
+//     }
+//   )
+//     .sort({ price: JSON.parse(req.query.sort) })
+//     .limit(JSON.parse(req.query.limit));
+// });
 
-router.get("/getFilteredItems/:category", (req, res, next) => {
-  console.log("params are", req.query, "category is", req.params.category);
+// router.get("/getFilteredItems/:category", (req, res, next) => {
+//   console.log("params are", req.query, "category is", req.params.category);
 
-  Item.find(
-    {
-      category: req.params.category,
-      price: {
-        $gte: 200,
-        $lte: 3000,
-      },
-      color: "#ffe900",
-      size: "S, M",
-    },
-    (err, data) => {
-      if (err) {
-        console.log(err);
-        return res.send.json({
-          success: false,
-          error: err,
-        });
-      }
+//   Item.find(
+//     {
+//       category: req.params.category,
+//       price: {
+//         $gte: 200,
+//         $lte: 3000,
+//       },
+//       color: "#ffe900",
+//       size: "S, M",
+//     },
+//     (err, data) => {
+//       if (err) {
+//         console.log(err);
+//         return res.send.json({
+//           success: false,
+//           error: err,
+//         });
+//       }
 
-      res.status(200).json({
-        success: true,
-        data,
-      });
-    }
-  )
-  .sort({ price: JSON.parse(req.query.sort)  })
-  .limit(JSON.parse(req.query.limit) );
-});
+//       res.status(200).json({
+//         success: true,
+//         data,
+//       });
+//     }
+//   )
+//   .sort({ price: JSON.parse(req.query.sort)  })
+//   .limit(JSON.parse(req.query.limit) );
+// });
 
 router.get("/getSizeFiltered", (req, res, next) => {
   console.log("sizes received", req.query);

@@ -97,7 +97,7 @@ class ContactUs extends React.Component {
 
   handleSubmit(evt) {
 	evt.preventDefault();
-	console.log('reachinf');
+	
     // validate all fields
     const { name, email, message } = this.state;
     const nameError = validateFields.validateName(name.value);
@@ -120,7 +120,6 @@ class ContactUs extends React.Component {
         message: message.value,
       };
 
-      console.log(templateParams);
       emailjs
         .send(
           "default_service",

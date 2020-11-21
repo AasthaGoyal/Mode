@@ -1,11 +1,18 @@
-import * as React from 'react'
-import classnames from 'classnames'
-
+import * as React from "react";
+import classnames from "classnames";
 
 class Filter extends React.Component {
+  state = {
+    priceFrom: "",
+    postcode: "",
+    sortOrder: "",
+    sortOrders: ["Highest First", "Lowest First"],
+  };
+
   render() {
-    const containerClasses = classnames('container', 'mb-1', styles.container)
-    const formClasses = classnames('form-horizontal', styles.form)
+    const postcodes = [];
+    const containerClasses = classnames("container", "mb-1", styles.container);
+    const formClasses = classnames("form-horizontal", styles.form);
 
     return (
       <div className={containerClasses}>
@@ -27,6 +34,10 @@ class Filter extends React.Component {
                     type="number"
                     id="price-from"
                     placeholder="£1,000,000"
+                    value={this.state.priceFrom}
+                    onChange={(event) =>
+                      this.setState({ priceFrom: Number(event.target.value) })
+                    }
                   />
                 </div>
               </div>
@@ -39,8 +50,20 @@ class Filter extends React.Component {
                   </label>
                 </div>
                 <div className="col-9 col-sm-12">
-                  <select className="form-select" id="postcode">
+                  <select
+                    className="form-select"
+                    id="postcode"
+                    value={this.state.postcode}
+                    onChange={(event) =>
+                      this.setState({ postcode: event.target.value })
+                    }
+                  >
                     <option value="">Choose...</option>
+                    {postcodes.map((pc) => (
+                      <option key={pc} value={pc.toLowerCase()}>
+                        {pc}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -53,8 +76,23 @@ class Filter extends React.Component {
                   </label>
                 </div>
                 <div className="col-9 col-sm-12">
-                  <select className="form-select" id="sortorder">
+                  <select
+                    className="form-select"
+                    id="sortorder"
+                    value={this.state.sortOrder}
+                    onChange={(event) =>
+                      this.setState({ sortOrder: event.target.value })
+                    }
+                  >
                     <option value="">Choose...</option>
+                    {this.state.sortOrders.map((order) => (
+                      <option
+                        key={order}
+                        value={order.replace(" ", "").toLowerCase()}
+                      >
+                        {order}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -62,8 +100,8 @@ class Filter extends React.Component {
           </div>
         </form>
       </div>
-    )
+    );
   }
 }
 
-export default Filter
+export default Filter;

@@ -36,7 +36,7 @@ class ManageUsers extends React.Component {
       return (
         <div class="loading-more">
           <i class="icon_loading"></i>
-          <a href="#">Loading More</a>
+         Loading More
         </div>
       );
     } else {
@@ -107,7 +107,7 @@ class ManageUsers extends React.Component {
 
                   <div class="loading-more">
                     <i class="icon_loading"></i>
-                    <a href="#">Loading More</a>
+                    Loading More
                   </div>
                 </div>
               </div>

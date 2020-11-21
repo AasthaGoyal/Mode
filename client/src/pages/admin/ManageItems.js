@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import Select from "react-select";
 import UpdateItem from "./UpdateItem";
 import { NavLink } from "react-router-dom";
 

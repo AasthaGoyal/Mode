@@ -184,7 +184,7 @@ class Filters extends React.Component {
           </div>
         </div>
         <section class="product-shop spad">
-        <form noValidate >
+        <form noValidate   onChange={() => setTimeout(() => this.props.updateFilter(this.state), 0)} >
           <div class="container">
             <div class="row">
               <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
@@ -192,6 +192,7 @@ class Filters extends React.Component {
                   
                   <h4 class="fw-title">Size</h4>
                   <div>
+                    <form>
                     <button
                       style={{
                         backgroundColor: "#e7e7e7",
@@ -240,6 +241,7 @@ class Filters extends React.Component {
                       L
                     </button>
                     {"  "}
+                    </form>
                     <br />
                     <br />
                     <button

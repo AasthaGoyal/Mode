@@ -133,17 +133,17 @@ class AddNewItem extends React.Component {
       formData.append("category", this.state.selectedOption);
 
       axios
-        .post("http://localhost:3001/items/upload-images", formData, {})
-        .then(res => console.log(res));
-        // .then((res) => res.data)
-        // .then((data) => {
-        //   console.log(data);
-        //   data.success === true
-        //     ? this.setState({ message: "The item was successfully added" })
-        //     : this.setState({
-        //         message: "Sorry some error occured" + data.error,
-        //       });
-        // });
+        .post("http://localhost:5000/items/upload-images", formData, {})
+
+        .then((res) => res.data)
+        .then((data) => {
+          console.log(data);
+          data.success === true
+            ? this.setState({ message: "The item was successfully added" })
+            : this.setState({
+                message: "Sorry some error occured" + data.error,
+              });
+        });
 
       // clear state and show all fields are validated
       this.setState({ allFieldsValidated: true });
@@ -254,15 +254,15 @@ class AddNewItem extends React.Component {
             <div className="row">
               <div className="col-lg-12">
                 <div className="breadcrumb-text">
-                <NavLink
-                  exact
-                  className="login-panel"
-                  activeClassName="is-active"
-                  to="/Login"
-                >
-                  <i className="fa fa-home"></i>Admin Login
-                </NavLink>
-                  
+                  <NavLink
+                    exact
+                    className="login-panel"
+                    activeClassName="is-active"
+                    to="/Login"
+                  >
+                    <i className="fa fa-home"></i>Admin Login
+                  </NavLink>
+
                   <span>Add New Item</span>
                 </div>
               </div>

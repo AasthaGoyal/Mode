@@ -4,6 +4,8 @@ import axios from "axios";
 import App from "../App";
 import { validateFields } from "./ValidateLoginFields";
 import classnames from "classnames";
+import * as emailjs from "emailjs-com";
+require("dotenv").config();
 
 class Login extends React.Component {
   constructor(props) {
@@ -45,11 +47,43 @@ class Login extends React.Component {
     e.preventDefault();
 
     if (this.state.cemail.length > 0) {
-      axios.get("http://localhost:3001/users/resetPassword/" + this.state.cemail)
-      .then(res => console.log(res));
+      axios
+        .get("http://localhost:5000/users/resetPassword/" + this.state.cemail)
+        .then((res) => res.data)
+        .then((data) => {
+          emailjs.init(process.env.REACT_APP_USER_ID);
 
-      this.setState({ smessage: "Check your email for further instructions " });
-      
+          if (data.success === true) {
+            let templateParams = data.data.map((user) => {
+              return (templateParams = {
+                email: user.email,
+                password: user.password,
+                name: user.name,
+              });
+            });
+            //if user is found
+
+            emailjs
+              .send(
+                "default_service",
+                "forget_password",
+                templateParams,
+                process.env.REACT_APP_USER_ID
+              )
+              .then((res) => {
+                console.log(res);
+                this.setState({
+                  smessage: "Check your email for further instructions ",
+                });
+              });
+          } else {
+            this.setState({
+              smessage:
+                "The user is not registered with us, please contact admin",
+            });
+          }
+        })
+        .catch((err) => console.log(err));
     } else {
       this.setState({
         smessage: "Please enter your registered email id to continue",
@@ -155,6 +189,25 @@ class Login extends React.Component {
     } else {
       return (
         <div>
+          <div class="breacrumb-section">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="breadcrumb-text">
+                    <NavLink
+                      exact
+                      className="login-panel"
+                      activeClassName="is-active"
+                      to="/Home"
+                    >
+                      <i className="fa fa-home"></i>Home
+                    </NavLink>
+                    <span> Login</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="register-login-section spad">
             <div className="container">
               <div className="row">
