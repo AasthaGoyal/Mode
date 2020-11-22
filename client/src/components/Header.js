@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Dropdown from "react-bootstrap/Dropdown";
+
 
 class Header extends React.Component {
   constructor() {
@@ -13,6 +13,7 @@ class Header extends React.Component {
       cat3: false,
       cat4: false,
       contact: false,
+      selectedOption: ""
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -87,7 +88,26 @@ class Header extends React.Component {
     //e.target.backgroundColor="#E7AB3C";
   };
 
+
+  categorySelected(e) {
+    e.preventDefault();
+    console.log(e);
+    this.setState({
+      selectedOption: e.target.value,
+    });
+  }
+
+
   render() {
+    const data = [
+      "Kurta",
+      "Kurta Plazo Set",
+      "A Line Kurta",
+      "Kurta Plazo Dupatta Set",
+    ];
+    let cats = data.map((ex) => {
+      return <option value={ex} key={ex} onClick={this.handleDropdown}>  {ex}</option>;
+    });
     return (
       <div>
         <header className="header-section">
@@ -154,7 +174,19 @@ class Header extends React.Component {
                 </div>
                 <div className="col-lg-7 col-md-7">
                   <div className="advanced-search">
-                    <Dropdown>
+                  <select
+                        placeholder="Choose category"
+                        value={this.state.selectedOption}
+                        onChange={this.categorySelected.bind(this)}
+                        className="category-btn"
+                      >
+                        <option selected enabled="false">
+                          {" "}
+                         Categories
+                        </option>
+                        {cats}
+                      </select>
+                    {/* <Dropdown>
                       <Dropdown.Toggle
                         variant="warning"
                         id="dropdown-variants-warning"
@@ -175,7 +207,7 @@ class Header extends React.Component {
                           Kurta Plazo Dupatta Set
                         </Dropdown.Item>
                       </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown> */}
 
                     <div className="input-group">
                       <input type="text" placeholder="What do you need?" />
