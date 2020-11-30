@@ -1,6 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
+import Kurta from "../pages/Kurta";
+import KurtaPlazo from "../pages/KurtaPlazo";
+import ALine from "../pages/ALineKurta";
+import Dupatta from "../pages/ALineKurta";
+import ALineKurta from "../pages/ALineKurta";
 
 class Header extends React.Component {
   constructor() {
@@ -13,7 +17,7 @@ class Header extends React.Component {
       cat3: false,
       cat4: false,
       contact: false,
-      selectedOption: ""
+      selectedOption: "",
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -88,7 +92,6 @@ class Header extends React.Component {
     //e.target.backgroundColor="#E7AB3C";
   };
 
-
   categorySelected(e) {
     e.preventDefault();
     console.log(e);
@@ -96,7 +99,6 @@ class Header extends React.Component {
       selectedOption: e.target.value,
     });
   }
-
 
   render() {
     const data = [
@@ -106,7 +108,12 @@ class Header extends React.Component {
       "Kurta Plazo Dupatta Set",
     ];
     let cats = data.map((ex) => {
-      return <option value={ex} key={ex} onClick={this.handleDropdown}>  {ex}</option>;
+      return (
+        <option value={ex} key={ex} onClick={this.handleDropdown}>
+          {" "}
+          {ex}
+        </option>
+      );
     });
     return (
       <div>
@@ -174,18 +181,18 @@ class Header extends React.Component {
                 </div>
                 <div className="col-lg-7 col-md-7">
                   <div className="advanced-search">
-                  <select
-                        placeholder="Choose category"
-                        value={this.state.selectedOption}
-                        onChange={this.categorySelected.bind(this)}
-                        className="category-btn"
-                      >
-                        <option selected enabled="false">
-                          {" "}
-                         Categories
-                        </option>
-                        {cats}
-                      </select>
+                    <select
+                      placeholder="Choose category"
+                      value={this.state.selectedOption}
+                      onChange={this.categorySelected.bind(this)}
+                      className="category-btn"
+                    >
+                      <option selected enabled="false">
+                        {" "}
+                        Categories
+                      </option>
+                      {cats}
+                    </select>
                     {/* <Dropdown>
                       <Dropdown.Toggle
                         variant="warning"
