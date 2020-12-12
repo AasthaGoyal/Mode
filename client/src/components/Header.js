@@ -1,10 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Kurta from "../pages/Kurta";
-import KurtaPlazo from "../pages/KurtaPlazo";
-import ALine from "../pages/ALineKurta";
-import Dupatta from "../pages/ALineKurta";
-import ALineKurta from "../pages/ALineKurta";
+import Dropdown from "react-bootstrap/Dropdown"
 
 class Header extends React.Component {
   constructor() {
@@ -181,7 +177,7 @@ class Header extends React.Component {
                 </div>
                 <div className="col-lg-7 col-md-7">
                   <div className="advanced-search">
-                    <select
+                    {/* <select
                       placeholder="Choose category"
                       value={this.state.selectedOption}
                       onChange={this.categorySelected.bind(this)}
@@ -192,8 +188,8 @@ class Header extends React.Component {
                         Categories
                       </option>
                       {cats}
-                    </select>
-                    {/* <Dropdown>
+                    </select> */}
+                    <Dropdown>
                       <Dropdown.Toggle
                         variant="warning"
                         id="dropdown-variants-warning"
@@ -214,7 +210,7 @@ class Header extends React.Component {
                           Kurta Plazo Dupatta Set
                         </Dropdown.Item>
                       </Dropdown.Menu>
-                    </Dropdown> */}
+                    </Dropdown> 
 
                     <div className="input-group">
                       <input type="text" placeholder="What do you need?" />
