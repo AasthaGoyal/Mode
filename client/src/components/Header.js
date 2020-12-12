@@ -1,6 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+
 import Dropdown from "react-bootstrap/Dropdown";
+
+
 
 class Header extends React.Component {
   constructor() {
@@ -96,6 +99,7 @@ class Header extends React.Component {
   //   });
   // }
 
+
   render() {
     // console.log(this.state.selectedOption);
     // this.state.selectedOption === "Kurta" ?
@@ -175,6 +179,7 @@ class Header extends React.Component {
                 </div>
                 <div className="col-lg-7 col-md-7">
                   <div className="advanced-search">
+
                     <Dropdown>
                       <Dropdown.Toggle
                         variant="warning"
