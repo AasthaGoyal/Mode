@@ -16,7 +16,7 @@ var app = express();
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "client/build")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cookieParser());
 
@@ -88,35 +88,6 @@ app.set("view engine", "ejs");
 // 	},
 // 	(err) => console.log(err)
 // );
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, '../client/build')));
-  app.get('/', function(req, res) {
-      res.sendFile(path.join(__dirname, 'build', 'index.html'));
-  });
-}
-
-if (process.env.NODE_ENV === "production") {
-  const privateKey = fs.readFileSync('/etc/letsencrypt/live/anime-sales.com/privkey.pem', 'utf8');
-  const certificate = fs.readFileSync('/etc/letsencrypt/live/anime-sales.com/cert.pem', 'utf8');
-  const ca = fs.readFileSync('/etc/letsencrypt/live/anime-sales.com/chain.pem', 'utf8');
-  const credentials = {
-      key: privateKey,
-      cert: certificate,
-      ca: ca
-  };
-
-  https.createServer(credentials, app).listen(443, () => {
-      console.log('HTTPS Server running on port 443');
-  });
-  http.createServer(function (req, res) {
-      res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-      res.end();
-  }).listen(80);
-} else if (process.env.NODE_ENV === "development") {
-  app.listen(9000);
-} else {
-  app.listen(9000);
-}
 
 // Error handling
 app.use(function (req, res, next) {
